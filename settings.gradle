@@ -1,2 +1,2 @@
 rootProject.name = 'shoppingmall'
-include 'admin', 'user', 'domain'
+include 'admin', 'user', 'domain', 'framework'
