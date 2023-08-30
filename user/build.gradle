@@ -6,6 +6,18 @@ plugins {
 group = 'com.openlabs'
 version = '1.0'
 
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    all {
+        resolutionStrategy {
+            cacheChangingModulesFor 0, 'seconds'
+            cacheDynamicVersionsFor 0, 'seconds'
+        }
+    }
+}
+
 dependencies {
     implementation project(":framework")
 }
