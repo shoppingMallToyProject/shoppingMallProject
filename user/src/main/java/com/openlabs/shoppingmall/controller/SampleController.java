@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Api(tags = {"sample test"})
 @RestController
 @RequiredArgsConstructor
 public class SampleController {
+
     private final SampleService service;
 
     @GetMapping("/test")
