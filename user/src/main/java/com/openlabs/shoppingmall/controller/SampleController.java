@@ -1,5 +1,7 @@
 package com.openlabs.shoppingmall.controller;
 
+import com.openlabs.framework.dto.ResponseDto;
+import com.openlabs.framework.exception.ShopException;
 import com.openlabs.shoppingmall.service.SampleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +19,12 @@ public class SampleController {
 
     @GetMapping("/test")
     @ApiOperation(value = "test api")
-    public String test(@RequestParam String param) {
-        return service.sampleService(param);
+    public ResponseDto<String> test(@RequestParam String param) {
+        try {
+            String result = service.sampleService(param);
+            return ResponseDto.ok(result);
+        } catch (ShopException e) {
+            return ResponseDto.error(401, "failure test", "FAIL", null);
+        }
     }
 }
