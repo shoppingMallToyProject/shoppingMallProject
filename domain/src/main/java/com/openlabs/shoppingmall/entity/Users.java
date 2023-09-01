@@ -3,6 +3,7 @@ package com.openlabs.shoppingmall.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "USERS")
@@ -15,27 +16,26 @@ public class Users extends BaseEntity {
     /** 고객ID */
     @Id @Column(name = "USER_ID")
     private String userId;
-    @Column(name = "USER_NAME")
     /** 고객명 */
+    @Column(name = "USER_NAME")
     private String userName;
-    @Column(name = "USER_PW")
     /** 고객비밀번호 */
+    @Column(name = "USER_PW")
     private String userPw;
-    @Column(name = "USER_STATUS")
     /** 고객상태 */
+    @Column(name = "USER_STATUS")
     private String userStatus;
     /** 고객등급 */
     @Column(name = "USER_RATING")
     private String userRating;
 
-    /** 주소 */
-    @Embedded
-    private Address address;
-//    /** 쿠폰DTO */
-//    @Embedded
-//    private Coupons coupons;
-
     /** 주문 */
-    @OneToMany(mappedBy = "users")
-    private List<Orders> orders;
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Orders> orders = new ArrayList<>();
+    /** 고객쿠폰 */
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<UserCoupons> userCoupon = new ArrayList<>();
+    /** 주소 */
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Address> address = new ArrayList<>();
 }

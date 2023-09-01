@@ -3,27 +3,35 @@ package com.openlabs.shoppingmall.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-//@Table(name = "COUPONS")
-//@Entity
+@Table(name = "COUPONS")
+@Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupons extends BaseEntity {
-    /** 주문상품ID */
+    /** 쿠폰ID */
     @Id @GeneratedValue
-    @Column(name = "ORDERITEM_ID")
-    private Long orderItemId;
-    /** 주문상품가 */
-    @Column(name = "ORDER_PRICE")
-    private Long orderPrice;
-    /** 주문상품수량 */
-    @Column(name = "ORDER_NUMBER")
-    private Long orderNumber;
+    @Column(name = "COUPON_ID")
+    private Long couponId;
+    /** 쿠폰명 */
+    @Column(name = "COUPON_NAME")
+    private String couponName;
+    /** 할인률 */
+    @Column(name = "DISCOUNT_RATE")
+    private Integer discountRate;
+    /** 이벤트시작일시 */
+    @Column(name = "EVENT_START_TIME")
+    private LocalDateTime eventStartTime;
+    /** 이벤트종료일시 */
+    @Column(name = "EVENT_END_TIME")
+    private LocalDateTime eventEndTime;
 
-//    /** 상품DTO */
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ITEM_ID")
-//    private Items items;
+    /** 고객쿠폰 */
+    @OneToMany(mappedBy = "coupons", cascade = CascadeType.ALL)
+    private List<UserCoupons> userCoupon = new ArrayList<>();
 }
