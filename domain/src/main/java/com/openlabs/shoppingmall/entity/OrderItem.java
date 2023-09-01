@@ -26,12 +26,8 @@ public class OrderItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_ID")
     private Items items;
-
     /** 주문DTO */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID")
     private Orders orders;
-//    /** 쿠폰DTO */
-//    @Embedded
-//    private Coupons coupons;
 }

@@ -34,8 +34,8 @@ public class Orders extends BaseEntity {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     // 연관관계 메서드
-    public void setMember(Users users) {
-        this.users = users;
-        users.getOrders().add(this);
-    }
+//    public void setMember(Users users) {
+//        this.users = users;
+//        users.getOrders().add(this);
+//    }
 }
