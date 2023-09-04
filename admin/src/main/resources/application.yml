@@ -7,6 +7,9 @@ logging:
       hibernate:
         SQL: debug
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   config:
     import: db-config.properties
   datasource:
