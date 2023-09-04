@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = {"sample test"})
 @RestController
-@RequestMapping("/labshop/v1/user")
+@RequestMapping("/labshop/v1/admin")
 @RequiredArgsConstructor
 public class SampleController {
 

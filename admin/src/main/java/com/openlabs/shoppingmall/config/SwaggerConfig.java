@@ -1,9 +1,7 @@
-package com.openlabs.framework.config;
+package com.openlabs.shoppingmall.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -14,23 +12,24 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration    // 스프링 실행시 설정파일 어노테이션
 @EnableSwagger2    // Swagger2를 사용하겠다는 어노테이션
-public class SwaggerConfig{
+public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("ShoppingMall")
+                .version("0.1")
                 .description("shopping mall Example")
                 .build();
     }
 
     //swagger 설정.
     @Bean
-    public Docket getDocket() {
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.openlabs.shoppingmall"))
-                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.openlabs.shoppingmall.controller"))
+                .paths(PathSelectors.ant("/labshop/v1/**"))
                 .build();
     }
 }
