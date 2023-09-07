@@ -23,4 +23,14 @@ public class UserTestResDto {
     private List<Orders> orders = new ArrayList<>();
     private List<Address> addresses = new ArrayList<>();
     private List<UserCoupons> userCoupons = new ArrayList<>();
+
+    public Users saveEntity(){
+        return Users.builder()
+                .userId(this.userId)
+                .userName(this.userName)
+                .userPw(this.userPw)
+                .userStatus(this.userStatus)
+                .userRating(this.userRating)
+                .build();
+    }
 }

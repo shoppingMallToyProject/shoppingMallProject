@@ -2,9 +2,9 @@ package com.openlabs.shoppingmall.controller;
 
 import com.openlabs.framework.dto.ResponseDto;
 import com.openlabs.framework.exception.ShopException;
+import com.openlabs.shoppingmall.dto.ItemTestResDto;
 import com.openlabs.shoppingmall.dto.OrderItemTestResDto;
 import com.openlabs.shoppingmall.dto.UserTestResDto;
-import com.openlabs.shoppingmall.entity.OrderItem;
 import com.openlabs.shoppingmall.entity.Users;
 import com.openlabs.shoppingmall.service.TestService;
 import io.swagger.annotations.Api;
@@ -35,7 +35,7 @@ public class TestController {
         }
     }
 
-    /** 서비스용 유저조회 서비스 */
+    /** 서비스용 유저상세 서비스 */
     @GetMapping("/r-user/detail")
     @ApiOperation(value = "유저단건조회 테스트")
     public ResponseDto<UserTestResDto> searchOneUsers(String userId){
@@ -63,6 +63,17 @@ public class TestController {
     public ResponseDto<OrderItemTestResDto> searchOneOrderItem(Long orderItemId){
         try {
             return ResponseDto.ok(service.searchOneOrderItem(orderItemId));
+        } catch (ShopException e) {
+            return ResponseDto.error(401, "실패", null, null);
+        }
+    }
+
+    /** 서비스용 상품생성 서비스 */
+    @PostMapping("/c-item")
+    @ApiOperation(value = "상품생성 테스트")
+    public ResponseDto<ItemTestResDto> createItem(ItemTestResDto item){
+        try {
+            return ResponseDto.ok(service.createItem(item));
         } catch (ShopException e) {
             return ResponseDto.error(401, "실패", null, null);
         }

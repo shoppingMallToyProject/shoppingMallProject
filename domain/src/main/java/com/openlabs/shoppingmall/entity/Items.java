@@ -1,6 +1,5 @@
 package com.openlabs.shoppingmall.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,11 +38,12 @@ public class Items extends BaseEntity {
     private LocalDateTime eventEndTime;
 
     /** 주문상품 연관관계 */
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORDERITEM_ID")
-    private OrderItem orderItem;
-//    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-//    private List<OrderItem> orderItem = new ArrayList<>();
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ORDERITEM_ID")
+//    private OrderItem orderItem;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<OrderItem> orderItem = new ArrayList<>();
 
 }

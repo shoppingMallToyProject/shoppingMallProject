@@ -24,12 +24,12 @@ public class UserCoupons extends BaseEntity {
     @Column(name = "USE_YN")
     private String useYn;
 
-    /** 고객DTO */
+    /** 고객 연관관계 */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private Users users;
-    /** 쿠폰DTO */
+    /** 쿠폰 연관관계 */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COUPON_ID")

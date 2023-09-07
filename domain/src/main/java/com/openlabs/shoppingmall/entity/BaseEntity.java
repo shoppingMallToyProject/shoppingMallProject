@@ -7,10 +7,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -33,9 +30,17 @@ public class BaseEntity {
     @LastModifiedDate
     @Column(name = "EDIT_TMSP", columnDefinition = "TIMESTAMP")
     private LocalDateTime editTmsp;
-
+    // 임시 생성, 수정자 생성
+    @PrePersist
+    public void onPreCreate() {
+        if (this.crtrId == null) this.crtrId = "tempId";
+        if (this.edirId == null) this.edirId = "tempId";
+    }
+    /**  */
     @PreUpdate
     public void onPreUpdate(){
+        // 임시 수정자 수정
+        if (this.edirId == null) this.edirId = "tempEditId";
         if (this.editTmsp == null) this.editTmsp = LocalDateTime.now();
     }
 }

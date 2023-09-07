@@ -1,13 +1,10 @@
 package com.openlabs.shoppingmall.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Table(name = "USERS")
 @Entity
@@ -36,21 +33,12 @@ public class Users extends BaseEntity {
     private UserRating userRating;
 
     /** 주문 */
-//    @JsonIgnore
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Orders> orders = new ArrayList<>();
     /** 고객쿠폰 */
-//    @JsonIgnore
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserCoupons> userCoupons = new ArrayList<>();
     /** 주소 */
-//    @JsonIgnore
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Address> addresses = new ArrayList<>();
-
-    // 연관관계 메서드
-    public void addOrder(Orders newOrder) {
-        this.orders.add(newOrder);
-    }
-
 }
