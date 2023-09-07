@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Coupons extends BaseEntity {
     private LocalDateTime eventEndTime;
 
     /** 고객쿠폰 */
-    @OneToMany(mappedBy = "coupons", cascade = CascadeType.ALL)
+//    @JsonIgnore
+    @OneToMany(mappedBy = "coupons", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserCoupons> userCoupon = new ArrayList<>();
 }

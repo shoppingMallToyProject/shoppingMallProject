@@ -1,12 +1,12 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "ITEMS")
 @Entity
@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Items extends BaseEntity {
     /** 상품ID */
-    @Id @Column(name = "ITEM_ID")
+    @Id @GeneratedValue
+    @Column(name = "ITEM_ID")
     private Long itemId;
     /** 상품명 */
     @Column(name = "ITEM_NAME")
@@ -36,4 +37,13 @@ public class Items extends BaseEntity {
     /** 이벤트종료일시 */
     @Column(name = "EVENT_END_TIME")
     private LocalDateTime eventEndTime;
+
+    /** 주문상품 연관관계 */
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ORDERITEM_ID")
+    private OrderItem orderItem;
+//    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+//    private List<OrderItem> orderItem = new ArrayList<>();
+
 }

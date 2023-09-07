@@ -1,8 +1,11 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "ORDERITEM")
 @Entity
@@ -22,12 +25,20 @@ public class OrderItem extends BaseEntity {
     @Column(name = "ORDER_NUMBER")
     private Long orderNumber;
 
-    /** 상품DTO */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ITEM_ID")
-    private Items items;
-    /** 주문DTO */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORDER_ID")
-    private Orders orders;
+    /** 상품 연관관계 */
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ITEM_ID")
+//    private Items item;
+//    @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY)
+//    private Items item;
+    @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY)
+    private List<Items> item = new ArrayList<>();
+    /** 주문 연관관계 */
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ORDER_ID")
+//    private Orders order;
+    @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY)
+    private List<Orders> order = new ArrayList<>();
 }

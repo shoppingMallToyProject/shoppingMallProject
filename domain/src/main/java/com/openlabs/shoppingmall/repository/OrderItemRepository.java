@@ -1,10 +1,10 @@
 package com.openlabs.shoppingmall.repository;
 
-import com.openlabs.shoppingmall.entity.Users;
+import com.openlabs.shoppingmall.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TestRepository extends JpaRepository<Users, String> {
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
 }

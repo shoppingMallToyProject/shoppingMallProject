@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,13 +22,15 @@ public class UserCoupons extends BaseEntity {
     private LocalDateTime useDate;
     /** 사용여부 */
     @Column(name = "USE_YN")
-    private Long useYn;
+    private String useYn;
 
     /** 고객DTO */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private Users users;
     /** 쿠폰DTO */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COUPON_ID")
     private Coupons coupons;

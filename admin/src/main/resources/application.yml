@@ -22,4 +22,8 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        enable_lazy_load_no_trans: true
