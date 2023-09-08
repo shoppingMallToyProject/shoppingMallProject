@@ -6,6 +6,7 @@ logging:
     org:
       hibernate:
         SQL: debug
+        type: trace
 spring:
   mvc:
     pathmatch:

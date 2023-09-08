@@ -27,14 +27,10 @@ public class OrderItem extends BaseEntity {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_ID")
-    private Items item;
-//    @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY)
-//    private List<Items> item = new ArrayList<>();
+    private Items items;
     /** 주문 연관관계 */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID")
-    private Orders order;
-//    @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY)
-//    private List<Orders> order = new ArrayList<>();
+    private Orders orders;
 }

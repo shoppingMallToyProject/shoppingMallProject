@@ -11,7 +11,6 @@ import com.openlabs.shoppingmall.entity.Users;
 import com.openlabs.shoppingmall.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +23,7 @@ public class TestController {
     @Autowired
     TestService service;
 
-    /**
-     * 서비스용 유저조회 서비스
-     */
+    /** 서비스용 유저조회 서비스 */
     @GetMapping("/r-user")
     @ApiOperation(value = "유저전체조회 테스트")
     public ResponseDto<List<Users>> searchUsers() {
@@ -37,9 +34,7 @@ public class TestController {
         }
     }
 
-    /**
-     * 서비스용 유저상세 서비스
-     */
+    /** 서비스용 유저상세 서비스 */
     @GetMapping("/r-user/detail")
     @ApiOperation(value = "유저단건조회 테스트")
     public ResponseDto<UserTestResDto> searchOneUsers(String userId) {
@@ -50,9 +45,7 @@ public class TestController {
         }
     }
 
-    /**
-     * 서비스용 유저생성 서비스
-     */
+    /** 서비스용 유저생성 서비스 */
     @PostMapping("/c-user")
     @ApiOperation(value = "유저생성 테스트")
     public ResponseDto<UserTestResDto> createUsers(UserTestResDto user) {
@@ -87,9 +80,7 @@ public class TestController {
         }
     }
 
-    /**
-     * 서비스용 상품생성 서비스
-     */
+    /** 서비스용 상품생성 서비스 */
     @PostMapping("/c-item")
     @ApiOperation(value = "상품생성 테스트")
     public ResponseDto<ItemTestResDto> createItem(ItemTestResDto item) {

@@ -1,6 +1,5 @@
 package com.openlabs.shoppingmall.service;
 
-import com.openlabs.framework.dto.ResponseDto;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.ItemTestResDto;
 import com.openlabs.shoppingmall.dto.OrderItemTestResDto;
@@ -11,10 +10,8 @@ import com.openlabs.shoppingmall.repository.OrderItemRepository;
 import com.openlabs.shoppingmall.repository.OrderRepository;
 import com.openlabs.shoppingmall.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -71,10 +68,10 @@ public class TestService {
         idList.forEach(id -> {
             Items items = itemRepo.findById(id).get();
             orderItemRepo.save(OrderItem.builder()
-                    .order(orders)
+                    .orders(orders)
                     .orderPrice(100000l)
                     .orderNumber(32l)
-                    .item(items)
+                    .items(items)
                     .build());
         });
     }
@@ -102,6 +99,6 @@ public class TestService {
     }
     public List<OrderItem> findUserOrderItem(Long orderId) {
         Orders orders = orderRepository.findById(orderId).get();
-        return orderItemRepo.findByOrder(orders);
+        return orderItemRepo.findByOrders(orders);
     }
 }
