@@ -43,7 +43,7 @@ public class Items extends BaseEntity {
 //    @JoinColumn(name = "ORDERITEM_ID")
 //    private OrderItem orderItem;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-    private List<OrderItem> orderItem = new ArrayList<>();
+//    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+//    private List<OrderItem> orderItem = new ArrayList<>();
 
 }

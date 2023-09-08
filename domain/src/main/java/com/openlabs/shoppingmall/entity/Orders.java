@@ -38,8 +38,8 @@ public class Orders extends BaseEntity {
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "ORDERITEM_ID")
 //    private OrderItem orderItem;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderItem> orderItem = new ArrayList<>();
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<OrderItem> orderItem = new ArrayList<>();
 
     // 연관관계 메서드
 //    public void setMember(Users users) {
