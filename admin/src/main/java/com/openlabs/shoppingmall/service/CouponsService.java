@@ -3,14 +3,16 @@ package com.openlabs.shoppingmall.service;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.CouponReqDto;
 import com.openlabs.shoppingmall.dto.CouponResDto;
+import com.openlabs.shoppingmall.entity.Coupons;
 import com.openlabs.shoppingmall.repository.CouponRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -94,33 +96,74 @@ public class CouponsService {
 //        return orderItemRepo.findByOrders(orders);
 //    }
     /** 쿠폰등록 */
-    public CouponResDto createCoupon(CouponResDto coupon) {
-        if (ObjectUtils.isEmpty(coupon)
-                || StringUtils.hasText(coupon.getCouponName())) {
-        }
-        CouponResDto result = ObjectConverter.toObject(couponRepo.save(coupon.saveEntity()), CouponResDto.class);
+    public CouponResDto createCoupon(CouponReqDto coupon) {
+
+        Coupons entity = Coupons.builder()
+                .couponName(coupon.getCouponName())
+                .discountRate(coupon.getDiscountRate())
+                .eventStartTime(parseDateTimeString(coupon.getEventStartTime()))
+                .eventEndTime(parseDateTimeString(coupon.getEventEndTime()))
+                .build();
+        CouponResDto result = ObjectConverter.toObject(couponRepo.save(entity), CouponResDto.class);
 
         return result;
+    }
+    private LocalDateTime parseDateTimeString(String dateTimeString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        return LocalDateTime.parse(dateTimeString, formatter);
     }
     /** 쿠폰수정 */
-    public CouponResDto updateCoupon(CouponResDto coupon) {
+    public CouponResDto updateCoupon(@Valid CouponResDto coupon) {
         CouponResDto result = ObjectConverter.toObject(couponRepo.save(coupon.saveEntity()), CouponResDto.class);
 
         return result;
     }
-    /** 쿠폰목록조회 */
-    public Long deleteCoupon(Long couponId) {
+    /** 쿠폰삭제 */
+    public Long deleteCoupon(@Valid Long couponId) {
+        try {
+            couponRepo.deleteById(couponId);
+        } catch (Exception e) {
+            log.error("삭제오류 : {}", e);
+        }
 
-        return null;
+        return couponId;
     }
-    /** 쿠폰상세조회 */
+    /** 쿠폰목록조회 */
     public List<CouponResDto> multiQueryCoupon(CouponReqDto reqDto) {
-
+//        log.info("EventStart : {}", reqDto.getEventStartTime());
+//        log.info("EventStartType : {}", reqDto.getEventStartTime().getClass().getName());
+//        List<CouponResDto> list = new ArrayList<>();
+//        Coupons entity = reqDto.queryEntity();
+//        if (StringUtils.hasText(reqDto.getCouponName())
+//                && reqDto.getDiscountRate() != null) {
+//            log.info("쿠폰명과 할인가 조회");
+////            list = ObjectConverter.toObject(couponRepo.findByCouponNameAndDiscountRateAndEventStartTime(entity),CouponResDto.class);
+//        } else if (StringUtils.hasText(reqDto.getCouponName())) {
+//            log.info("쿠폰명 조회");
+////            list = ObjectConverter.toObject(couponRepo.findByCouponName(entity),CouponResDto.class);
+//        } else if (reqDto.getDiscountRate() != null) {
+//            log.info("할인가 조회");
+////            list = ObjectConverter.toObject(couponRepo.findByDiscountRate(entity),CouponResDto.class);
+//        } else {
+//            log.info("전체 조회");
+//            list = Collections.singletonList(ObjectConverter.toObject(couponRepo.findAll(), CouponResDto.class));
+////            list = entityList.stream().map(this::convertDto).collect(Collectors.toList());
+//        }
+//        return list;
         return null;
     }
     /** 쿠폰상세조회 */
     public CouponResDto singleQueryCoupon(Long couponId) {
 
         return null;
+    }
+    private CouponResDto convertDto(Coupons coupon){
+        return CouponResDto.builder()
+                .couponId(coupon.getCouponId())
+                .couponName(coupon.getCouponName())
+                .discountRate(coupon.getDiscountRate())
+                .eventStartTime(coupon.getEventStartTime())
+                .eventEndTime(coupon.getEventEndTime())
+                .build();
     }
 }

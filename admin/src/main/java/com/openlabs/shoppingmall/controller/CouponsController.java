@@ -7,11 +7,14 @@ import com.openlabs.shoppingmall.dto.CouponResDto;
 import com.openlabs.shoppingmall.service.CouponsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/labshop/v1/admin")
 @Api(value = "쿠폰관련 API")
@@ -26,14 +29,17 @@ public class CouponsController {
      * */
     @PostMapping("/c-promo")
     @ApiOperation(value = "쿠폰등록")
-    public ResponseDto<CouponResDto> createCoupon(CouponResDto coupon) {
+    public ResponseDto<CouponResDto> createCoupon(CouponReqDto coupon) {
         try {
             return ResponseDto.ok(service.createCoupon(coupon));
         } catch (ShopException e) {
             return ResponseDto.error(401, "쿠폰등록에 실패했습니다.", null, null);
         }
     }
-
+    private LocalDateTime parseDateTimeString(String dateTimeString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        return LocalDateTime.parse(dateTimeString, formatter);
+    }
     /** 쿠폰수정
      *
      * @param coupon
@@ -41,12 +47,13 @@ public class CouponsController {
      * */
     @PutMapping("/u-promo")
     @ApiOperation(value = "쿠폰수정")
-    public ResponseDto<CouponResDto> updateCoupon(CouponResDto coupon) {
-        try {
-            return ResponseDto.ok(service.updateCoupon(coupon));
-        } catch (ShopException e) {
-            return ResponseDto.error(401, "쿠폰수정에 실패했습니다.", null, null);
-        }
+    public ResponseDto<CouponResDto> updateCoupon(@RequestBody CouponReqDto coupon) {
+//        try {
+//            return ResponseDto.ok(service.updateCoupon(coupon));
+//        } catch (ShopException e) {
+//            return ResponseDto.error(401, "쿠폰수정에 실패했습니다.", null, null);
+//        }
+        return null;
     }
 
     /** 쿠폰삭제
@@ -55,7 +62,7 @@ public class CouponsController {
      * @return  couponId
      * */
     @DeleteMapping("/d-promo")
-    @ApiOperation(value = "쿠폰수정")
+    @ApiOperation(value = "쿠폰삭제")
     public ResponseDto<Long> deleteCoupon(Long couponId) {
         try {
             service.deleteCoupon(couponId);
@@ -70,8 +77,8 @@ public class CouponsController {
      * @param reqDto
      * @return  List<CouponResDto>
      * */
-    @DeleteMapping("/r-promo")
-    @ApiOperation(value = "쿠폰수정")
+    @GetMapping("/r-promo")
+    @ApiOperation(value = "쿠폰목록조회")
     public ResponseDto<List<CouponResDto>> multiQueryCoupon(@RequestBody CouponReqDto reqDto) {
         try {
             return ResponseDto.ok(service.multiQueryCoupon(reqDto));
@@ -85,8 +92,8 @@ public class CouponsController {
      * @param couponId
      * @return  couponId
      * */
-    @GetMapping("/r-promo")
-    @ApiOperation(value = "유저생성 테스트")
+    @GetMapping("/r-promo/detail")
+    @ApiOperation(value = "쿠폰상세조회")
     public ResponseDto<CouponResDto> singleQueryCoupon(Long couponId) {
         try {
             return ResponseDto.ok(service.singleQueryCoupon(couponId));
