@@ -18,10 +18,10 @@ public class OrderItem extends BaseEntity {
     private Long orderItemId;
     /** 주문상품가 */
     @Column(name = "ORDER_PRICE")
-    private Long orderPrice;
+    private Integer orderPrice;
     /** 주문상품수량 */
     @Column(name = "ORDER_NUMBER")
-    private Long orderNumber;
+    private Integer orderNumber;
 
     /** 상품 연관관계 */
     @JsonIgnore
@@ -33,4 +33,9 @@ public class OrderItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID")
     private Orders orders;
+
+    // 연산 메서드
+//    public Integer totalPrice() {
+//        return this.items.discountItemPrice() * this.orderNumber;
+//    }
 }

@@ -4,8 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Table(name = "ITEMS")
 @Entity
@@ -23,10 +21,10 @@ public class Items extends BaseEntity {
     private String itemName;
     /** 상품가 */
     @Column(name = "ITEM_PRICE")
-    private String itemPrice;
+    private Integer itemPrice;
     /** 재고 */
     @Column(name = "ITEM_STOCK")
-    private String itemStock;
+    private Integer itemStock;
     /** 할인률 */
     @Column(name = "DISCOUNT_RATE")
     private Integer discountRate;
@@ -36,6 +34,29 @@ public class Items extends BaseEntity {
     /** 이벤트종료일시 */
     @Column(name = "EVENT_END_TIME")
     private LocalDateTime eventEndTime;
+
+    public Integer discountItemPrice(){
+        if (this.discountRate != 0 || this.discountRate != null) {
+            this.itemPrice = this.itemPrice * (this.discountRate / 100);
+        }
+
+        return this.itemPrice;
+    }
+
+    public Integer addStock(int cancelStock){
+        this.itemStock += cancelStock;
+        return this.itemStock;
+    }
+
+    public Integer withdrawStock(int sellStock){
+        this.itemStock -= sellStock;
+        if (this.itemStock <= 0) {
+            throw new RuntimeException("수량이 부족합니다.");
+        }
+
+        return this.itemStock;
+    }
+
 
     /** 주문상품 연관관계 */
 //    @JsonIgnore
