@@ -14,7 +14,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Users extends BaseEntity {
     /** 고객ID */
-    @Id @Column(name = "USER_ID")
+    @Id
+    @Column(name = "USER_ID")
     private String userId;
     /** 고객명 */
     @Column(name = "USER_NAME")
@@ -24,18 +25,20 @@ public class Users extends BaseEntity {
     private String userPw;
     /** 고객상태 */
     @Column(name = "USER_STATUS")
-    private String userStatus;
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
     /** 고객등급 */
     @Column(name = "USER_RATING")
-    private String userRating;
+    @Enumerated(EnumType.STRING)
+    private UserRating userRating;
 
     /** 주문 */
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Orders> orders = new ArrayList<>();
     /** 고객쿠폰 */
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    private List<UserCoupons> userCoupon = new ArrayList<>();
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserCoupons> userCoupons = new ArrayList<>();
     /** 주소 */
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    private List<Address> address = new ArrayList<>();
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Address> addresses = new ArrayList<>();
 }

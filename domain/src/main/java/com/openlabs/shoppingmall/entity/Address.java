@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,7 +26,8 @@ public class Address {
     @Column(name = "ZIPCODE")
     private String zipcode;
 
-    /** 고객 */
+    /** 고객 연관관계 */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private Users users;

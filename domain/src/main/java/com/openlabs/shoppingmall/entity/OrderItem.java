@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,17 +18,24 @@ public class OrderItem extends BaseEntity {
     private Long orderItemId;
     /** 주문상품가 */
     @Column(name = "ORDER_PRICE")
-    private Long orderPrice;
+    private Integer orderPrice;
     /** 주문상품수량 */
     @Column(name = "ORDER_NUMBER")
-    private Long orderNumber;
+    private Integer orderNumber;
 
-    /** 상품DTO */
+    /** 상품 연관관계 */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_ID")
     private Items items;
-    /** 주문DTO */
+    /** 주문 연관관계 */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID")
     private Orders orders;
+
+    // 연산 메서드
+//    public Integer totalPrice() {
+//        return this.items.discountItemPrice() * this.orderNumber;
+//    }
 }

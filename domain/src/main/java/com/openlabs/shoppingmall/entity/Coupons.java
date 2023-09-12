@@ -26,12 +26,14 @@ public class Coupons extends BaseEntity {
     private Integer discountRate;
     /** 이벤트시작일시 */
     @Column(name = "EVENT_START_TIME")
+//    private String eventStartTime;
     private LocalDateTime eventStartTime;
     /** 이벤트종료일시 */
     @Column(name = "EVENT_END_TIME")
+//    private String eventEndTime;
     private LocalDateTime eventEndTime;
 
-    /** 고객쿠폰 */
-    @OneToMany(mappedBy = "coupons", cascade = CascadeType.ALL)
+    /** 고객쿠폰 연관관계 */
+    @OneToMany(mappedBy = "coupons", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserCoupons> userCoupon = new ArrayList<>();
 }

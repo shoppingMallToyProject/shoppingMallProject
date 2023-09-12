@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,15 +24,22 @@ public class Orders extends BaseEntity {
     private LocalDateTime orderDate;
     /** 주문상태 */
     @Column(name = "ORDER_STATUS")
-    private String orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     /** 고객 */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private Users users;
-    /** 주문상품 */
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems = new ArrayList<>();
+
+    /** 주문상품 연관관계 */
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ORDERITEM_ID")
+//    private OrderItem orderItem;
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<OrderItem> orderItem = new ArrayList<>();
 
     // 연관관계 메서드
 //    public void setMember(Users users) {
