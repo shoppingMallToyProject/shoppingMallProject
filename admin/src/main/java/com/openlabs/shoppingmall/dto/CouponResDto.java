@@ -1,6 +1,5 @@
 package com.openlabs.shoppingmall.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.openlabs.shoppingmall.entity.Coupons;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,16 +27,12 @@ public class CouponResDto {
     private Integer discountRate;
     /** 이벤트 시작일시 */
     @NotBlank(message = "이벤트시작일시는 필수 항목입니다.")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-//    private String eventStartTime;
     private LocalDateTime eventStartTime;
     /** 이벤트 종료일시 */
     @NotBlank(message = "이벤트종료일시는 필수 항목입니다.")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-//    private String eventEndTime;
     private LocalDateTime eventEndTime;
 
-    public Coupons saveEntity(){
+    public Coupons toEntity(){
         return Coupons.builder()
                 .couponId(this.couponId)
                 .couponName(this.couponName)
