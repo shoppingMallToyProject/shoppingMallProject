@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.service;
 
+import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.ItemTestResDto;
 import com.openlabs.shoppingmall.dto.OrderItemTestResDto;
@@ -11,6 +12,10 @@ import com.openlabs.shoppingmall.repository.OrderRepository;
 import com.openlabs.shoppingmall.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -94,10 +99,12 @@ public class TestService {
         return item;
     }
 
-    public List<Orders> findUserOrder(String userId) {
+    public Slice<Orders> findUserOrder(String userId, PageDto pageDto) {
         Users users = userRepo.findById(userId).get();
-        return orderRepository.findByUsers(users);
+        Pageable pageable = PageRequest.of(pageDto.getPageNumber(), pageDto.getSize());
+        return orderRepository.findByUsers(users, pageable);
     }
+
     public List<OrderItem> findUserOrderItem(Long orderId) {
         Orders orders = orderRepository.findById(orderId).get();
         return orderItemRepo.findByOrders(orders);
