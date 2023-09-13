@@ -18,9 +18,9 @@ public class ItemTestResDto {
     /** 상품명 */
     private String itemName;
     /** 상품가 */
-    private String itemPrice;
+    private Integer itemPrice;
     /** 재고 */
-    private String itemStock;
+    private Integer itemStock;
     /** 할인률 */
     private Integer discountRate;
     /** 이벤트시작일시 */

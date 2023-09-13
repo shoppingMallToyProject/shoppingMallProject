@@ -66,11 +66,12 @@ public class TestService {
                 .build());
 
         idList.forEach(id -> {
+
             Items items = itemRepo.findById(id).get();
             orderItemRepo.save(OrderItem.builder()
                     .orders(orders)
-                    .orderPrice(100000l)
-                    .orderNumber(32l)
+                    .orderPrice(100000)
+                    .orderNumber(32)
                     .items(items)
                     .build());
         });
