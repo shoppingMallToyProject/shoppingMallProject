@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 @Slf4j
 @RestController
@@ -36,10 +34,6 @@ public class CouponsController {
             return ResponseDto.error(401, "쿠폰등록에 실패했습니다.", null, null);
         }
     }
-    private LocalDateTime parseDateTimeString(String dateTimeString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        return LocalDateTime.parse(dateTimeString, formatter);
-    }
     /** 쿠폰수정
      *
      * @param coupon
@@ -47,13 +41,12 @@ public class CouponsController {
      * */
     @PutMapping("/u-promo")
     @ApiOperation(value = "쿠폰수정")
-    public ResponseDto<CouponResDto> updateCoupon(@RequestBody CouponReqDto coupon) {
-//        try {
-//            return ResponseDto.ok(service.updateCoupon(coupon));
-//        } catch (ShopException e) {
-//            return ResponseDto.error(401, "쿠폰수정에 실패했습니다.", null, null);
-//        }
-        return null;
+    public ResponseDto<CouponResDto> updateCoupon(CouponReqDto coupon) {
+        try {
+            return ResponseDto.ok(service.updateCoupon(coupon));
+        } catch (ShopException e) {
+            return ResponseDto.error(401, "쿠폰수정에 실패했습니다.", null, null);
+        }
     }
 
     /** 쿠폰삭제
@@ -79,7 +72,7 @@ public class CouponsController {
      * */
     @GetMapping("/r-promo")
     @ApiOperation(value = "쿠폰목록조회")
-    public ResponseDto<List<CouponResDto>> multiQueryCoupon(@RequestBody CouponReqDto reqDto) {
+    public ResponseDto<List<CouponResDto>> multiQueryCoupon(CouponReqDto reqDto) {
         try {
             return ResponseDto.ok(service.multiQueryCoupon(reqDto));
         } catch (ShopException e) {
