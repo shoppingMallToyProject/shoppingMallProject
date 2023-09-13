@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Items, Long> {
-    Slice<Items> findByItemName(String itemName, Pageable pageable, String nextId);
+    Slice<Items> findByItemName(String itemName, Pageable pageable);
+
+    Slice<Items> findSliceBy(Pageable pageable);
 }
