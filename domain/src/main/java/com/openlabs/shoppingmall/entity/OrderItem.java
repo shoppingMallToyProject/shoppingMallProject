@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Table(name = "ORDERITEM")
 @Entity
@@ -34,8 +35,36 @@ public class OrderItem extends BaseEntity {
     @JoinColumn(name = "ORDER_ID")
     private Orders orders;
 
-    // 연산 메서드
-//    public Integer totalPrice() {
-//        return this.items.discountItemPrice() * this.orderNumber;
-//    }
+    /** 주문상품 생성 */
+    public static OrderItem createOrderItem(Items item, Orders order, int orderPrice, int orderNumber){
+        OrderItem orderItem = OrderItem.builder()
+                .orderPrice(orderPrice)
+                .orderNumber(orderNumber)
+                .items(item)
+                .orders(order)
+                .build();
+
+        item.removeStock(orderNumber);
+        return orderItem;
+    }
+    /** 주문상품 취소 */
+    public OrderItem cancel(){
+        OrderItem orderItem = OrderItem.builder()
+                .orderPrice(orderPrice)
+                .orderNumber(orderNumber)
+                .build();
+
+        getItems().addStock(orderNumber);
+        return orderItem;
+    }
+    /** 주문상품 전체가격 */
+    public Integer getTotalPrice(Items items){
+        if (Objects.nonNull(items.getDiscountRate()) && items.getDiscountRate() != 0) {
+            this.orderPrice = (this.items.getItemPrice() * (this.items.getDiscountRate() / 100))
+                    * this.orderNumber;
+        } else {
+            this.orderPrice = this.items.getItemPrice() * this.orderNumber;
+        }
+        return this.orderPrice;
+    }
 }

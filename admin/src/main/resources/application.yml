@@ -23,8 +23,8 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: validate
 #      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true

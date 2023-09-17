@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "ORDERS")
@@ -27,6 +26,9 @@ public class Orders extends BaseEntity {
     @Column(name = "ORDER_STATUS")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    /** 총 금액 */
+    @Column(name = "TOTAL_PRICE")
+    private Integer totalPrice;
 
     /** 고객 */
     @JsonIgnore
@@ -34,17 +36,40 @@ public class Orders extends BaseEntity {
     @JoinColumn(name = "USER_ID")
     private Users users;
 
-    /** 주문상품 연관관계 */
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ORDERITEM_ID")
-//    private OrderItem orderItem;
-//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<OrderItem> orderItem = new ArrayList<>();
-
-    // 연관관계 메서드
-//    public void setMember(Users users) {
-//        this.users = users;
-//        users.getOrders().add(this);
-//    }
+    /** 주문 생성 */
+    public Orders orderCreate(Users user, List<OrderItem> orderItem) {
+        return Orders.builder()
+                .users(user)
+                .orderStatus(OrderStatus.ORDER)
+                .orderDate(LocalDateTime.now())
+                .totalPrice(getTotalPrice(orderItem))
+                .build();
+    }
+    /** 주문 생성(쿠폰적용) */
+    public Orders orderCreate(Users user, List<OrderItem> orderItem, Coupons coupons) {
+        return Orders.builder()
+                .users(user)
+                .orderStatus(OrderStatus.ORDER)
+                .orderDate(LocalDateTime.now())
+                .totalPrice(getTotalPrice(orderItem, coupons))
+                .build();
+    }
+    /** 주문 취소 */
+    public Orders cancel(Users user, List<OrderItem> orderItem){
+        return Orders.builder()
+                .users(user)
+                .orderStatus(OrderStatus.CANCEL)
+                .orderDate(LocalDateTime.now())
+                .totalPrice(getTotalPrice(orderItem))
+                .build();
+    }
+    /** 주문 총금액 */
+    public Integer getTotalPrice(List<OrderItem> orderItem){
+        return orderItem.stream().mapToInt(OrderItem::getOrderPrice).sum();
+    }
+    /** 주문 총금액(쿠폰적용) */
+    public Integer getTotalPrice(List<OrderItem> orderItem, Coupons coupons){
+        return (orderItem.stream().mapToInt(OrderItem::getOrderPrice).sum())
+                * coupons.getDiscountRate();
+    }
 }

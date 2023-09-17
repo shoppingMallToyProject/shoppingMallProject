@@ -1,9 +1,11 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.openlabs.framework.exception.ShopException;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Table(name = "ITEMS")
 @Entity
@@ -35,36 +37,25 @@ public class Items extends BaseEntity {
     @Column(name = "EVENT_END_TIME")
     private LocalDateTime eventEndTime;
 
+    /** 할인적용가 */
     public Integer discountItemPrice(){
-        if (this.discountRate != 0 || this.discountRate != null) {
+        if (Objects.nonNull(this.discountRate) && this.discountRate != 0) {
             this.itemPrice = this.itemPrice * (this.discountRate / 100);
         }
 
         return this.itemPrice;
     }
-
+    /** 취소시 수량복구 */
     public Integer addStock(int cancelStock){
         this.itemStock += cancelStock;
         return this.itemStock;
     }
-
-    public Integer withdrawStock(int sellStock){
+    /** 구매시 수량소모 */
+    public Integer removeStock(int sellStock){
         this.itemStock -= sellStock;
         if (this.itemStock <= 0) {
-            throw new RuntimeException("수량이 부족합니다.");
+            throw new ShopException("수량이 부족합니다.");
         }
-
         return this.itemStock;
     }
-
-
-    /** 주문상품 연관관계 */
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ORDERITEM_ID")
-//    private OrderItem orderItem;
-
-//    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-//    private List<OrderItem> orderItem = new ArrayList<>();
-
 }
