@@ -25,6 +25,7 @@ public class Items extends BaseEntity {
     @Column(name = "ITEM_NAME")
     private String itemName;
     /** 상품가 */
+
     @Column(name = "ITEM_PRICE")
     private Integer itemPrice;
     /** 재고 */
@@ -43,11 +44,12 @@ public class Items extends BaseEntity {
     private LocalDateTime eventEndTime;
 
     /** 할인적용가 */
-    public Integer discountItemPrice(){
-        if (Objects.nonNull(this.discountRate) && this.discountRate != 0) {
-            this.itemPrice = this.itemPrice * (this.discountRate / 100);
+    @Transient // DB에 맵핑되지 않음
+    public Integer getDiscountedItemPrice(){
+        if (Objects.nonNull(discountRate) && discountRate != 0) {
+            double discountMultiplier = 1.0 - (this.discountRate / 100.0);
+            return (int) (this.itemPrice * discountMultiplier);
         }
-
         return this.itemPrice;
     }
     /** 취소시 수량복구 */
