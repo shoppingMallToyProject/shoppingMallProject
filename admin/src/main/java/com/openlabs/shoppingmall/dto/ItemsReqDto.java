@@ -1,7 +1,8 @@
 package com.openlabs.shoppingmall.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.openlabs.shoppingmall.entity.Coupons;
+import com.openlabs.framework.dto.PageDto;
+import com.openlabs.shoppingmall.entity.Items;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,31 +19,38 @@ import java.time.format.DateTimeFormatter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CouponReqDto {
-    /** 쿠폰명 */
-    private Long couponId;
-    /** 쿠폰명 */
-//    @NotBlank(message = "쿠폰명은 필수항목입니다.")
-    private String couponName;
-    /** 할인가 */
-//    @NotNull(message = "할인률은 필수 항목입니다.")
-    @Max(value = 100, message = "할인률은 100이상 지정할 수 없습니다.")
+public class ItemsReqDto extends PageDto{
+    /** 상품ID */
+    private Long itemId;
+    /** 상품명 */
+//    @NotBlank(message = "상품명은 필수항목입니다.")
+    private String itemName;
+    /** 상품가 */
+//    @NotNull(message = "상품가는 필수항목입니다.")
+    private Integer itemPrice;
+    /** 재고 */
+//    @NotNull(message = "상품재고는 필수항목입니다.")
+    private Integer itemStock;
+    /** 할인률 */
+    @Max(value = 100)
     private Integer discountRate;
-    /** 이벤트 시작일시 */
+    /** 이벤트시작일시 */
     @NotBlank(message = "이벤트시작일시는 필수항목입니다.")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private String eventStartTime;
-    /** 이벤트 종료일시 */
+    /** 이벤트종료일시 */
     @NotBlank(message = "이벤트종료일시는 필수항목입니다.")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private String eventEndTime;
 
-    public Coupons toEntity(){
+    public Items toEntity(){
         LocalDateTime startTime = parseDateTimeString(this.eventStartTime);
         LocalDateTime endTime = parseDateTimeString(this.eventEndTime);
-        return Coupons.builder()
-                .couponId(this.couponId)
-                .couponName(this.couponName)
+        return Items.builder()
+                .itemId(this.itemId)
+                .itemName(this.itemName)
+                .itemPrice(this.itemPrice)
+                .itemStock(this.itemStock)
                 .discountRate(this.discountRate)
                 .eventStartTime(startTime)
                 .eventEndTime(endTime)

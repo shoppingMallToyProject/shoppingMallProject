@@ -9,9 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/labshop/v1/admin")
@@ -72,9 +72,14 @@ public class CouponsController {
      * */
     @GetMapping("/r-promo")
     @ApiOperation(value = "쿠폰목록조회")
-    public ResponseDto<List<CouponResDto>> multiQueryCoupon(CouponReqDto reqDto) {
+    public ResponseDto<Slice<CouponResDto>> multiQueryCoupon(CouponReqDto reqDto
+//            , PageDto pageDto
+            , @RequestParam(name = "page", defaultValue = "0") int page
+            , @RequestParam(name = "size", defaultValue = "10") int size
+    ) {
         try {
-            return ResponseDto.ok(service.multiQueryCoupon(reqDto));
+//            return ResponseDto.ok(service.multiQueryCoupon(reqDto, pageDto));
+            return ResponseDto.ok(service.multiQueryCoupon(reqDto, page, size));
         } catch (ShopException e) {
             return ResponseDto.error(401, "쿠폰수정에 실패했습니다.", null, null);
         }

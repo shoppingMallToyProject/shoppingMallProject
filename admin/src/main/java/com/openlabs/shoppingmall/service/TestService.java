@@ -4,7 +4,7 @@ import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.ItemTestResDto;
 import com.openlabs.shoppingmall.dto.OrderItemTestResDto;
-import com.openlabs.shoppingmall.dto.UserTestResDto;
+import com.openlabs.shoppingmall.dto.UsersTestResDto;
 import com.openlabs.shoppingmall.entity.*;
 import com.openlabs.shoppingmall.repository.ItemRepository;
 import com.openlabs.shoppingmall.repository.OrderItemRepository;
@@ -12,7 +12,6 @@ import com.openlabs.shoppingmall.repository.OrderRepository;
 import com.openlabs.shoppingmall.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -45,14 +44,14 @@ public class TestService {
     /**
      * 서비스용 유저상세 서비스
      */
-    public UserTestResDto searchOneUsers(String userId) {
-        return ObjectConverter.toObject(userRepo.findById(userId), UserTestResDto.class);
+    public UsersTestResDto searchOneUsers(String userId) {
+        return ObjectConverter.toObject(userRepo.findById(userId), UsersTestResDto.class);
     }
 
     /**
      * 서비스용 유저생성 서비스
      */
-    public UserTestResDto createUsers(UserTestResDto user) {
+    public UsersTestResDto createUsers(UsersTestResDto user) {
         Users entity = user.saveEntity();
         userRepo.save(entity);
 

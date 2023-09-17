@@ -2,11 +2,14 @@ package com.openlabs.shoppingmall.entity;
 
 import com.openlabs.framework.exception.ShopException;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@DynamicInsert
 @Table(name = "ITEMS")
 @Entity
 @Builder
@@ -26,9 +29,11 @@ public class Items extends BaseEntity {
     private Integer itemPrice;
     /** 재고 */
     @Column(name = "ITEM_STOCK")
+    @ColumnDefault(value = "0")
     private Integer itemStock;
     /** 할인률 */
-    @Column(name = "DISCOUNT_RATE")
+    @Column(name = "DISCOUNT_RATE", length = 3)
+    @ColumnDefault(value = "0")
     private Integer discountRate;
     /** 이벤트시작일시 */
     @Column(name = "EVENT_START_TIME")

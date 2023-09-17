@@ -11,6 +11,8 @@ dependencies {
     implementation project(':domain')
     // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
     // MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
     // 유효성검사(@Validated)

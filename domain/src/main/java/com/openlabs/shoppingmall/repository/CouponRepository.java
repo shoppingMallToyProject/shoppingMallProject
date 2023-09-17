@@ -1,17 +1,20 @@
 package com.openlabs.shoppingmall.repository;
 
 import com.openlabs.shoppingmall.entity.Coupons;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupons, Long> {
-    List<Coupons> findByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameLikeAndDiscountRateIs(LocalDateTime startTime, LocalDateTime endTime, String couponName, Integer discountRate);
+    Slice<Coupons> findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameContainingAndDiscountRateIs(LocalDateTime eventStartTime, LocalDateTime eventEndTime, String couponName, Integer discountRate, Pageable pageable);
 
-    List<Coupons> findByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameLike(LocalDateTime eventStartTime, LocalDateTime eventEndTime, String couponName);
+    Slice<Coupons> findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameContaining(LocalDateTime eventStartTime, LocalDateTime eventEndTime, String couponName, Pageable pageable);
 
-    List<Coupons> findByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndDiscountRateIs(LocalDateTime eventStartTime, LocalDateTime eventEndTime, Integer discountRate);
+    Slice<Coupons> findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndDiscountRateIs(LocalDateTime eventStartTime, LocalDateTime eventEndTime, Integer discountRate, Pageable pageable);
+
+    Slice<Coupons> findSliceBy(Pageable pageable);
 }
