@@ -37,12 +37,12 @@ public class Orders extends BaseEntity {
     private Users users;
 
     /** 주문 생성 */
-    public Orders orderCreate(Users user, List<OrderItem> orderItem) {
+    public Orders orderCreate(Users user/*, List<OrderItem> orderItem*/) {
         return Orders.builder()
                 .users(user)
                 .orderStatus(OrderStatus.ORDER)
                 .orderDate(LocalDateTime.now())
-                .totalPrice(getTotalPrice(orderItem))
+//                .totalPrice(getTotalPrice(orderItem))
                 .build();
     }
     /** 주문 생성(쿠폰적용) */
@@ -65,11 +65,11 @@ public class Orders extends BaseEntity {
     }
     /** 주문 총금액 */
     public Integer getTotalPrice(List<OrderItem> orderItem){
-        return orderItem.stream().mapToInt(OrderItem::getOrderPrice).sum();
+        return orderItem.stream().mapToInt(OrderItem::getTotalPrice).sum();
     }
     /** 주문 총금액(쿠폰적용) */
     public Integer getTotalPrice(List<OrderItem> orderItem, Coupons coupons){
-        return (orderItem.stream().mapToInt(OrderItem::getOrderPrice).sum())
+        return (orderItem.stream().mapToInt(OrderItem::getTotalPrice).sum())
                 * coupons.getDiscountRate();
     }
 }

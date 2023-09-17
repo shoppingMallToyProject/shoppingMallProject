@@ -18,11 +18,11 @@ public class OrderItem extends BaseEntity {
     @Column(name = "ORDERITEM_ID")
     private Long orderItemId;
     /** 주문상품가 */
-    @Column(name = "ORDER_PRICE")
-    private Integer orderPrice;
+    @Column(name = "TOTAL_PRICE")
+    private Integer totalPrice;
     /** 주문상품수량 */
-    @Column(name = "ORDER_NUMBER")
-    private Integer orderNumber;
+    @Column(name = "ORDER_QUANTITY")
+    private Integer orderQuantity;
 
     /** 상품 연관관계 */
     @JsonIgnore
@@ -36,10 +36,10 @@ public class OrderItem extends BaseEntity {
     private Orders orders;
 
     /** 주문상품 생성 */
-    public static OrderItem createOrderItem(Items item, Orders order, int orderPrice, int orderNumber){
+    public OrderItem createOrderItem(Items item, Orders order, int orderNumber){
         OrderItem orderItem = OrderItem.builder()
-                .orderPrice(orderPrice)
-                .orderNumber(orderNumber)
+                .totalPrice(getTotalPrice(item, orderNumber))
+                .orderQuantity(orderNumber)
                 .items(item)
                 .orders(order)
                 .build();
@@ -48,23 +48,21 @@ public class OrderItem extends BaseEntity {
         return orderItem;
     }
     /** 주문상품 취소 */
-    public OrderItem cancel(){
+    public OrderItem cancel(Items item){
         OrderItem orderItem = OrderItem.builder()
-                .orderPrice(orderPrice)
-                .orderNumber(orderNumber)
+                .totalPrice(getTotalPrice(item, this.orderQuantity))
+                .orderQuantity(this.orderQuantity)
                 .build();
 
-        getItems().addStock(orderNumber);
+        getItems().addStock(this.orderQuantity);
         return orderItem;
     }
     /** 주문상품 전체가격 */
-    public Integer getTotalPrice(Items items){
+    public Integer getTotalPrice(Items items, int orderNumber){
         if (Objects.nonNull(items.getDiscountRate()) && items.getDiscountRate() != 0) {
-            this.orderPrice = (this.items.getItemPrice() * (this.items.getDiscountRate() / 100))
-                    * this.orderNumber;
+            return  (items.getItemPrice() * (items.getDiscountRate() / 100)) * orderNumber;
         } else {
-            this.orderPrice = this.items.getItemPrice() * this.orderNumber;
+            return items.getItemPrice() * orderNumber;
         }
-        return this.orderPrice;
     }
 }

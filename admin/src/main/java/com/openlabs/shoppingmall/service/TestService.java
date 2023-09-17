@@ -74,8 +74,8 @@ public class TestService {
             Items items = itemRepo.findById(id).get();
             orderItemRepo.save(OrderItem.builder()
                     .orders(orders)
-                    .orderPrice(100000)
-                    .orderNumber(32)
+                    .totalPrice(100000)
+                    .orderQuantity(32)
                     .items(items)
                     .build());
         });
