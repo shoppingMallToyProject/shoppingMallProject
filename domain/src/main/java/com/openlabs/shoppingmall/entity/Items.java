@@ -25,7 +25,6 @@ public class Items extends BaseEntity {
     @Column(name = "ITEM_NAME")
     private String itemName;
     /** 상품가 */
-
     @Column(name = "ITEM_PRICE")
     private Integer itemPrice;
     /** 재고 */

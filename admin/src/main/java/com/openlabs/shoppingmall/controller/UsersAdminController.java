@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,21 +35,35 @@ public class UsersAdminController {
         try {
             return ResponseDto.ok(service.updateUser(reqDto));
         } catch (ShopException e) {
-            return ResponseDto.error(401, "쿠폰등록에 실패했습니다.", null, null);
+            return ResponseDto.error(401, "고객관리에 실패했습니다.", null, null);
         }
     }
-    /** 고객관리
+    /** 고객목록조회
      *
      * @param reqDto
      * @return  UserResDto
      * */
     @GetMapping("/r-users")
-    @ApiOperation(value = "고객관리")
+    @ApiOperation(value = "고객목록조회")
     public ResponseDto<Page<UsersResDto>> multiQueryUser(UsersReqDto reqDto, PageDto pageDto) {
         try {
             return ResponseDto.ok(service.multiQueryUser(reqDto, pageDto));
         } catch (ShopException e) {
-            return ResponseDto.error(401, "쿠폰등록에 실패했습니다.", null, null);
+            return ResponseDto.error(401, "고객목록조회에 실패했습니다.", null, null);
+        }
+    }
+    /** 고객상세조회
+     *
+     * @param reqDto
+     * @return  UserResDto
+     * */
+    @GetMapping("/r-users/detail")
+    @ApiOperation(value = "고객상세조회")
+    public ResponseDto<UsersResDto> singleQueryUser(UsersReqDto reqDto) {
+        try {
+            return ResponseDto.ok(service.singleQueryUser(reqDto));
+        } catch (ShopException e) {
+            return ResponseDto.error(401, "고객상세조회에 실패했습니다.", null, null);
         }
     }
 }

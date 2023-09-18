@@ -32,7 +32,7 @@ public class ItemsAdminController {
         try {
             return ResponseDto.ok(service.createItems(reqDto));
         } catch (ShopException e) {
-            return ResponseDto.error(401, ",상품등록에 실패했습니다.", null, null);
+            return ResponseDto.error(401, "상품등록에 실패했습니다.", null, null);
         }
     }
     /** 상품수정
