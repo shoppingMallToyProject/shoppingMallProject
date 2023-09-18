@@ -36,7 +36,7 @@ public class OrderItem extends BaseEntity {
     private Orders orders;
 
     /** 주문상품 생성 */
-    public OrderItem createOrderItem(Items item, Orders order, int orderNumber){
+    public static OrderItem createOrderItem(Items item, Orders order, int orderNumber){
         OrderItem orderItem = OrderItem.builder()
                 .totalPrice(getTotalPrice(item, orderNumber))
                 .orderQuantity(orderNumber)
@@ -58,7 +58,7 @@ public class OrderItem extends BaseEntity {
         return orderItem;
     }
     /** 주문상품 전체가격 */
-    public Integer getTotalPrice(Items items, int orderNumber){
+    public static Integer getTotalPrice(Items items, int orderNumber){
         if (Objects.nonNull(items.getDiscountRate()) && items.getDiscountRate() != 0) {
             return  (items.getItemPrice() * (items.getDiscountRate() / 100)) * orderNumber;
         } else {
