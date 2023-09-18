@@ -23,7 +23,7 @@ public class Address {
     @Column(name = "STREET")
     private String street;
     /** 우편번호 */
-    @Column(name = "ZIPCODE")
+    @Column(name = "ZIPCODE", length = 6)
     private String zipcode;
 
     /** 고객 연관관계 */

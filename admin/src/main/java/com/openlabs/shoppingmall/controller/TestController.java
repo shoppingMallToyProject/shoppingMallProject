@@ -5,7 +5,7 @@ import com.openlabs.framework.dto.ResponseDto;
 import com.openlabs.framework.exception.ShopException;
 import com.openlabs.shoppingmall.dto.ItemTestResDto;
 import com.openlabs.shoppingmall.dto.OrderItemTestResDto;
-import com.openlabs.shoppingmall.dto.UserTestResDto;
+import com.openlabs.shoppingmall.dto.UsersTestResDto;
 import com.openlabs.shoppingmall.entity.OrderItem;
 import com.openlabs.shoppingmall.entity.Orders;
 import com.openlabs.shoppingmall.entity.Users;
@@ -13,8 +13,6 @@ import com.openlabs.shoppingmall.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +43,7 @@ public class TestController {
      */
     @GetMapping("/r-user/detail")
     @ApiOperation(value = "유저단건조회 테스트")
-    public ResponseDto<UserTestResDto> searchOneUsers(String userId) {
+    public ResponseDto<UsersTestResDto> searchOneUsers(String userId) {
         try {
             return ResponseDto.ok(service.searchOneUsers(userId));
         } catch (ShopException e) {
@@ -58,7 +56,7 @@ public class TestController {
      */
     @PostMapping("/c-user")
     @ApiOperation(value = "유저생성 테스트")
-    public ResponseDto<UserTestResDto> createUsers(UserTestResDto user) {
+    public ResponseDto<UsersTestResDto> createUsers(UsersTestResDto user) {
         try {
             return ResponseDto.ok(service.createUsers(user));
         } catch (ShopException e) {

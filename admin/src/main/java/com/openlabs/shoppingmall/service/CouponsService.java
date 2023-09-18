@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.service;
 
+import com.openlabs.framework.exception.ShopException;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.CouponReqDto;
 import com.openlabs.shoppingmall.dto.CouponResDto;
@@ -7,13 +8,14 @@ import com.openlabs.shoppingmall.entity.Coupons;
 import com.openlabs.shoppingmall.repository.CouponRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -44,6 +46,7 @@ public class CouponsService {
             couponRepo.deleteById(couponId);
         } catch (Exception e) {
             log.error("삭제오류 : {}", e);
+            new ShopException("삭제 실패");
         }
 
         return couponId;
@@ -52,24 +55,27 @@ public class CouponsService {
     /**
      * 쿠폰목록조회
      */
-    public List<CouponResDto> multiQueryCoupon(@Valid CouponReqDto reqDto) {
-        List<CouponResDto> list = new ArrayList<>();
+    public Slice<CouponResDto> multiQueryCoupon(CouponReqDto reqDto
+//            , PageDto pageDto
+            , int page
+            , int size) {
+        Pageable pageable = PageRequest.of(page,size);
+
         Coupons entity = reqDto.toEntity();
         if (StringUtils.hasText(reqDto.getCouponName())
                 && reqDto.getDiscountRate() != null) {
-            List<Coupons> tmp = couponRepo.findByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameLikeAndDiscountRateIs(entity.getEventStartTime(), entity.getEventEndTime(), entity.getCouponName(), entity.getDiscountRate());
-            tmp.forEach(coupons -> list.add(convertDto(coupons)));
+            return couponRepo.findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameContainingAndDiscountRateIs(entity.getEventStartTime(), entity.getEventEndTime(), entity.getCouponName(), entity.getDiscountRate(), pageable)
+                    .map(coupons -> ObjectConverter.toObject(coupons, CouponResDto.class));
         } else if (StringUtils.hasText(reqDto.getCouponName())) {
-            List<Coupons> tmp = couponRepo.findByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameLike(entity.getEventStartTime(), entity.getEventEndTime(), entity.getCouponName());
-            tmp.forEach(coupons -> list.add(convertDto(coupons)));
+            return couponRepo.findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameContaining(entity.getEventStartTime(), entity.getEventEndTime(), entity.getCouponName(), pageable)
+                    .map(coupons -> ObjectConverter.toObject(coupons, CouponResDto.class));
         } else if (reqDto.getDiscountRate() != null) {
-            List<Coupons> tmp = couponRepo.findByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndDiscountRateIs(entity.getEventStartTime(), entity.getEventEndTime(), entity.getDiscountRate());
-            tmp.forEach(coupons -> list.add(convertDto(coupons)));
+            return  couponRepo.findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndDiscountRateIs(entity.getEventStartTime(), entity.getEventEndTime(), entity.getDiscountRate(), pageable)
+                    .map(coupons -> ObjectConverter.toObject(coupons, CouponResDto.class));
         } else {
-            List<Coupons> tmp = couponRepo.findAll();
-            tmp.forEach(coupons -> list.add(convertDto(coupons)));
+            return couponRepo.findSliceBy(pageable)
+                    .map(coupons -> ObjectConverter.toObject(coupons, CouponResDto.class));
         }
-        return list;
     }
 
     /**
@@ -77,15 +83,5 @@ public class CouponsService {
      */
     public CouponResDto singleQueryCoupon(@Valid Long couponId) {
         return ObjectConverter.toObject(couponRepo.findById(couponId), CouponResDto.class);
-    }
-    /**  */
-    private CouponResDto convertDto(Coupons coupon) {
-        return CouponResDto.builder()
-                .couponId(coupon.getCouponId())
-                .couponName(coupon.getCouponName())
-                .discountRate(coupon.getDiscountRate())
-                .eventStartTime(coupon.getEventStartTime())
-                .eventEndTime(coupon.getEventEndTime())
-                .build();
     }
 }

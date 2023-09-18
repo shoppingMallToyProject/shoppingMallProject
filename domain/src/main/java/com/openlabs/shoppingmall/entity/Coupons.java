@@ -22,7 +22,7 @@ public class Coupons extends BaseEntity {
     @Column(name = "COUPON_NAME")
     private String couponName;
     /** 할인률 */
-    @Column(name = "DISCOUNT_RATE")
+    @Column(name = "DISCOUNT_RATE", length = 3)
     private Integer discountRate;
     /** 이벤트시작일시 */
     @Column(name = "EVENT_START_TIME")

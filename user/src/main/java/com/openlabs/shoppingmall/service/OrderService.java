@@ -5,13 +5,11 @@ import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.CartDto;
 import com.openlabs.shoppingmall.dto.OrderDetailDto;
 import com.openlabs.shoppingmall.dto.OrderDto;
-import com.openlabs.shoppingmall.dto.UserDto;
 import com.openlabs.shoppingmall.entity.*;
 import com.openlabs.shoppingmall.repository.OrderItemRepository;
 import com.openlabs.shoppingmall.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.criterion.Order;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -59,9 +57,9 @@ public class OrderService {
             Items items = itemService.findItem(cartDto.getItemId());
             orderItemRepository.save(OrderItem.builder()
                     .items(items)
-                    .orderNumber(cartDto.getItemNumber())
+                    .orderQuantity(cartDto.getItemNumber())
                     .orders(orders)
-                    .orderPrice(items.getItemPrice() * cartDto.getItemNumber())
+                    .totalPrice(items.getItemPrice() * cartDto.getItemNumber())
                     .build());
         });
     }
@@ -83,7 +81,7 @@ public class OrderService {
                     .orderId(orderItem.getOrders().getOrderId())
                     .orderStatus(orderItem.getOrders().getOrderStatus())
                     .itemId(orderItem.getItems().getItemId())
-                    .itemNumber(orderItem.getOrderNumber())
+                    .itemNumber(orderItem.getOrderQuantity())
                     .build());
         });
         return orderDetailDtoList;

@@ -2,10 +2,13 @@ package com.openlabs.shoppingmall.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@DynamicInsert
 @Table(name = "USERCOUPON")
 @Entity
 @Builder
@@ -21,7 +24,8 @@ public class UserCoupons extends BaseEntity {
     @Column(name = "USE_DATE")
     private LocalDateTime useDate;
     /** 사용여부 */
-    @Column(name = "USE_YN")
+    @Column(name = "USE_YN", length = 1)
+    @ColumnDefault(value = "'N'") // 문자열이라 '' 넣어줘야함
     private String useYn;
 
     /** 고객 연관관계 */

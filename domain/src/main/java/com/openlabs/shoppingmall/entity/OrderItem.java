@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Table(name = "ORDERITEM")
 @Entity
@@ -17,11 +18,11 @@ public class OrderItem extends BaseEntity {
     @Column(name = "ORDERITEM_ID")
     private Long orderItemId;
     /** 주문상품가 */
-    @Column(name = "ORDER_PRICE")
-    private Integer orderPrice;
+    @Column(name = "TOTAL_PRICE")
+    private Integer totalPrice;
     /** 주문상품수량 */
-    @Column(name = "ORDER_NUMBER")
-    private Integer orderNumber;
+    @Column(name = "ORDER_QUANTITY")
+    private Integer orderQuantity;
 
     /** 상품 연관관계 */
     @JsonIgnore
@@ -34,8 +35,34 @@ public class OrderItem extends BaseEntity {
     @JoinColumn(name = "ORDER_ID")
     private Orders orders;
 
-    // 연산 메서드
-//    public Integer totalPrice() {
-//        return this.items.discountItemPrice() * this.orderNumber;
-//    }
+    /** 주문상품 생성 */
+    public OrderItem createOrderItem(Items item, Orders order, int orderNumber){
+        OrderItem orderItem = OrderItem.builder()
+                .totalPrice(getTotalPrice(item, orderNumber))
+                .orderQuantity(orderNumber)
+                .items(item)
+                .orders(order)
+                .build();
+
+        item.removeStock(orderNumber);
+        return orderItem;
+    }
+    /** 주문상품 취소 */
+    public OrderItem cancel(Items item){
+        OrderItem orderItem = OrderItem.builder()
+                .totalPrice(getTotalPrice(item, this.orderQuantity))
+                .orderQuantity(this.orderQuantity)
+                .build();
+
+        getItems().addStock(this.orderQuantity);
+        return orderItem;
+    }
+    /** 주문상품 전체가격 */
+    public Integer getTotalPrice(Items items, int orderNumber){
+        if (Objects.nonNull(items.getDiscountRate()) && items.getDiscountRate() != 0) {
+            return  (items.getItemPrice() * (items.getDiscountRate() / 100)) * orderNumber;
+        } else {
+            return items.getItemPrice() * orderNumber;
+        }
+    }
 }

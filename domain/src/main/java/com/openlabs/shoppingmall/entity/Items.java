@@ -1,10 +1,15 @@
 package com.openlabs.shoppingmall.entity;
 
+import com.openlabs.framework.exception.ShopException;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
+@DynamicInsert
 @Table(name = "ITEMS")
 @Entity
 @Builder
@@ -20,13 +25,16 @@ public class Items extends BaseEntity {
     @Column(name = "ITEM_NAME")
     private String itemName;
     /** 상품가 */
+
     @Column(name = "ITEM_PRICE")
     private Integer itemPrice;
     /** 재고 */
     @Column(name = "ITEM_STOCK")
+    @ColumnDefault(value = "0")
     private Integer itemStock;
     /** 할인률 */
-    @Column(name = "DISCOUNT_RATE")
+    @Column(name = "DISCOUNT_RATE", length = 3)
+    @ColumnDefault(value = "0")
     private Integer discountRate;
     /** 이벤트시작일시 */
     @Column(name = "EVENT_START_TIME")
@@ -35,36 +43,26 @@ public class Items extends BaseEntity {
     @Column(name = "EVENT_END_TIME")
     private LocalDateTime eventEndTime;
 
-    public Integer discountItemPrice(){
-        if (this.discountRate != 0 || this.discountRate != null) {
-            this.itemPrice = this.itemPrice * (this.discountRate / 100);
+    /** 할인적용가 */
+    @Transient // DB에 맵핑되지 않음
+    public Integer getDiscountedItemPrice(){
+        if (Objects.nonNull(discountRate) && discountRate != 0) {
+            double discountMultiplier = 1.0 - (this.discountRate / 100.0);
+            return (int) (this.itemPrice * discountMultiplier);
         }
-
         return this.itemPrice;
     }
-
+    /** 취소시 수량복구 */
     public Integer addStock(int cancelStock){
         this.itemStock += cancelStock;
         return this.itemStock;
     }
-
-    public Integer withdrawStock(int sellStock){
+    /** 구매시 수량소모 */
+    public Integer removeStock(int sellStock){
         this.itemStock -= sellStock;
         if (this.itemStock <= 0) {
-            throw new RuntimeException("수량이 부족합니다.");
+            throw new ShopException("수량이 부족합니다.");
         }
-
         return this.itemStock;
     }
-
-
-    /** 주문상품 연관관계 */
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ORDERITEM_ID")
-//    private OrderItem orderItem;
-
-//    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-//    private List<OrderItem> orderItem = new ArrayList<>();
-
 }
