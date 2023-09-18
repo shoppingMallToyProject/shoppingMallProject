@@ -11,13 +11,14 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupons, Long> {
+    /** 쿠폰목록조회(이벤트시작,종료일시, 쿠폰명, 쿠폰할인률 조건검색) */
     Slice<Coupons> findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameContainingAndDiscountRateIs(LocalDateTime eventStartTime, LocalDateTime eventEndTime, String couponName, Integer discountRate, Pageable pageable);
-
+    /** 쿠폰목록조회(이벤트시작,종료일시, 쿠폰명 조건검색) */
     Slice<Coupons> findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndCouponNameContaining(LocalDateTime eventStartTime, LocalDateTime eventEndTime, String couponName, Pageable pageable);
-
+    /** 쿠폰목록조회(이벤트시작,종료일시, 쿠폰할인률 조건검색) */
     Slice<Coupons> findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndDiscountRateIs(LocalDateTime eventStartTime, LocalDateTime eventEndTime, Integer discountRate, Pageable pageable);
-
+    /** 쿠폰목록조회(이벤트시작,종료일시 조건검색) */
     Slice<Coupons> findSliceBy(Pageable pageable);
 
-    Slice<Coupons> findByUsers(Users users, Pageable pageable);
+//    Slice<Coupons> findByUsers(Users users, Pageable pageable);
 }

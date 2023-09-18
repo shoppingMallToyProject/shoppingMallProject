@@ -24,12 +24,12 @@ public class CouponService {
     /**
      * 사용자 쿠폰 목록 조회 API
      */
-    public Slice<CouponDto> getCouponList(String userId, PageDto pageDto) {
-        Users users = userService.getUser(userId);
-        Pageable pageable = PageRequest.of(pageDto.getPageNumber(), pageDto.getSize());
-        return couponRepository.findByUsers(users, pageable)
-                .map(coupon -> ObjectConverter.toObject(coupon, CouponDto.class));
-    }
+//    public Slice<CouponDto> getCouponList(String userId, PageDto pageDto) {
+//        Users users = userService.getUser(userId);
+//        Pageable pageable = PageRequest.of(pageDto.getPageNumber(), pageDto.getSize());
+//        return couponRepository.findByUsers(users, pageable)
+//                .map(coupon -> ObjectConverter.toObject(coupon, CouponDto.class));
+//    }
 
     public Coupons getCoupon(long couponId) {
         return couponRepository.findById(couponId).orElse(null);

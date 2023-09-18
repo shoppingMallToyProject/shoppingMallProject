@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 @Service
 @Validated
-public class OrdersService {
+public class OrdersAdminService {
     @Autowired
     OrderRepository orderRepo;
 }

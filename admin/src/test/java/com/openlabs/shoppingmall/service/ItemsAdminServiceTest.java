@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Slf4j
 @SpringBootTest(classes = AdminApplication.class)
-class ItemsServiceTest {
+class ItemsAdminServiceTest {
     @Autowired
     ItemRepository itemRepo;
 

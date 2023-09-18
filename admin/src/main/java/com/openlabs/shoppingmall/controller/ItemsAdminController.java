@@ -1,10 +1,11 @@
 package com.openlabs.shoppingmall.controller;
 
+import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.dto.ResponseDto;
 import com.openlabs.framework.exception.ShopException;
 import com.openlabs.shoppingmall.dto.ItemsReqDto;
 import com.openlabs.shoppingmall.dto.ItemsResDto;
-import com.openlabs.shoppingmall.service.ItemsService;
+import com.openlabs.shoppingmall.service.ItemsAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/labshop/v1/admin")
 @Api(value = "상품관련 API")
-public class ItemsController {
+public class ItemsAdminController {
     @Autowired
-    ItemsService service;
+    ItemsAdminService service;
 
     /** 상품등록
      *
@@ -70,14 +71,9 @@ public class ItemsController {
      * */
     @GetMapping("/r-items")
     @ApiOperation(value = "상품목록조회")
-    public ResponseDto<Slice<ItemsResDto>> multiQueryItems(ItemsReqDto reqDto
-            , @RequestParam(name = "page", defaultValue = "0") int page
-            , @RequestParam(name = "size", defaultValue = "10") int size
-//            , @RequestParam PageDto pageDto
-    ) {
+    public ResponseDto<Slice<ItemsResDto>> multiQueryItems(ItemsReqDto reqDto, PageDto pageDto) {
         try {
-            return ResponseDto.ok(service.multiQueryItems(reqDto, page, size));
-//            return ResponseDto.ok(service.multiQueryItems(reqDto, pageDto));
+            return ResponseDto.ok(service.multiQueryItems(reqDto, pageDto));
         } catch (ShopException e) {
             return ResponseDto.error(401, "쿠폰등록에 실패했습니다.", null, null);
         }

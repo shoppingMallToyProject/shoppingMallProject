@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Slf4j
 @SpringBootTest(classes = AdminApplication.class)
-class OrdersServiceTest {
+class OrdersAdminServiceTest {
     @Autowired
     UserRepository userRepo;
     @Autowired

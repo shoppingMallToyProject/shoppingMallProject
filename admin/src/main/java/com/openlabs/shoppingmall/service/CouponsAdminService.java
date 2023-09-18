@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.service;
 
+import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.exception.ShopException;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.CouponReqDto;
@@ -20,7 +21,7 @@ import javax.validation.Valid;
 @Slf4j
 @Service
 @Validated
-public class CouponsService {
+public class CouponsAdminService {
     @Autowired
     CouponRepository couponRepo;
 
@@ -55,11 +56,8 @@ public class CouponsService {
     /**
      * 쿠폰목록조회
      */
-    public Slice<CouponResDto> multiQueryCoupon(CouponReqDto reqDto
-//            , PageDto pageDto
-            , int page
-            , int size) {
-        Pageable pageable = PageRequest.of(page,size);
+    public Slice<CouponResDto> multiQueryCoupon(CouponReqDto reqDto, PageDto pageDto) {
+        Pageable pageable = PageRequest.of(pageDto.getPageNumber(), pageDto.getSize());
 
         Coupons entity = reqDto.toEntity();
         if (StringUtils.hasText(reqDto.getCouponName())

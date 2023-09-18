@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.service;
 
+import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.exception.ShopException;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.ItemsReqDto;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 @Slf4j
 @Service
 @Validated
-public class ItemsService {
+public class ItemsAdminService {
     @Autowired
     ItemRepository itemRepo;
 
@@ -42,14 +43,9 @@ public class ItemsService {
         return itemId;
     }
     /** 상품목록조회 */
-    public Slice<ItemsResDto> multiQueryItems(ItemsReqDto reqDto
-            , int page
-            ,  int size
-//            , PageDto pageDto
-    ) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Slice<ItemsResDto> multiQueryItems(ItemsReqDto reqDto, PageDto pageDto) {
+        Pageable pageable = PageRequest.of(reqDto.getPageNumber(), pageDto.getSize());
 
-//        Pageable pageable = PageRequest.of(reqDto.getPageNumber(), reqDto.getSize());
         return itemRepo.findSliceBy(pageable)
                 .map(items -> ObjectConverter.toObject(items, ItemsResDto.class));
     }

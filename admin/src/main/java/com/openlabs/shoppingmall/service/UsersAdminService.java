@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.service;
 
+import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.UsersReqDto;
 import com.openlabs.shoppingmall.dto.UsersResDto;
@@ -21,7 +22,7 @@ import java.util.List;
 @Slf4j
 @Service
 @Validated
-public class UsersService {
+public class UsersAdminService {
     @Autowired
     UserRepository userRepo;
 
@@ -35,12 +36,12 @@ public class UsersService {
     /**
      * 고객목록조회
      */
-    public Page<UsersResDto> multiQueryUser(@Valid UsersReqDto reqDto, Pageable pageable) {
+    public Page<UsersResDto> multiQueryUser(@Valid UsersReqDto reqDto, PageDto pageDto) {
         List<UsersResDto> list = new ArrayList<>();
         List<Users> tmp = userRepo.findAll();
         tmp.forEach(user -> list.add(convertDto(user)));
         Long count = userRepo.count();
-        pageable = PageRequest.of(reqDto.getPageNumber(), reqDto.getSize());
+        Pageable pageable = PageRequest.of(reqDto.getPageNumber(), reqDto.getSize());
 
         return new PageImpl<>(list, pageable, count);
     }
