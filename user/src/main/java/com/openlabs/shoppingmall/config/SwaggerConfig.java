@@ -17,7 +17,6 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("ShoppingMall")
-                .version("0.1")
                 .description("shopping mall Example")
                 .build();
     }
