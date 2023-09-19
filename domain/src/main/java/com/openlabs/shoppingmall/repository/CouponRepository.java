@@ -24,5 +24,4 @@ public interface CouponRepository extends JpaRepository<Coupons, Long> {
     /** 쿠폰명 단건조회(중복체크) */
     Optional<Items> findByCouponName(String couponName);
 
-//    Slice<Coupons> findByUsers(Users users, Pageable pageable);
 }
