@@ -1,10 +1,11 @@
 package com.openlabs.shoppingmall.controller;
 
+import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.dto.ResponseDto;
 import com.openlabs.framework.exception.ShopException;
 import com.openlabs.shoppingmall.dto.CouponReqDto;
 import com.openlabs.shoppingmall.dto.CouponResDto;
-import com.openlabs.shoppingmall.service.CouponsService;
+import com.openlabs.shoppingmall.service.CouponsAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/labshop/v1/admin")
 @Api(value = "쿠폰관련 API")
-public class CouponsController {
+public class CouponsAdminController {
     @Autowired
-    CouponsService service;
+    CouponsAdminService service;
 
     /** 쿠폰등록
      *
@@ -72,14 +73,9 @@ public class CouponsController {
      * */
     @GetMapping("/r-promo")
     @ApiOperation(value = "쿠폰목록조회")
-    public ResponseDto<Slice<CouponResDto>> multiQueryCoupon(CouponReqDto reqDto
-//            , PageDto pageDto
-            , @RequestParam(name = "page", defaultValue = "0") int page
-            , @RequestParam(name = "size", defaultValue = "10") int size
-    ) {
+    public ResponseDto<Slice<CouponResDto>> multiQueryCoupon(CouponReqDto reqDto , PageDto pageDto) {
         try {
-//            return ResponseDto.ok(service.multiQueryCoupon(reqDto, pageDto));
-            return ResponseDto.ok(service.multiQueryCoupon(reqDto, page, size));
+            return ResponseDto.ok(service.multiQueryCoupon(reqDto, pageDto));
         } catch (ShopException e) {
             return ResponseDto.error(401, "쿠폰수정에 실패했습니다.", null, null);
         }

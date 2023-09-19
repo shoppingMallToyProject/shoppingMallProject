@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.service;
 
+import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.UsersReqDto;
 import com.openlabs.shoppingmall.dto.UsersResDto;
@@ -14,35 +15,55 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 @Validated
-public class UsersService {
+public class UsersAdminService {
     @Autowired
     UserRepository userRepo;
 
     /**
      * 고객관리
      */
-    public UsersResDto updateUser(@Valid UsersReqDto reqDto) {
+    public UsersResDto updateUser(UsersReqDto reqDto) {
+        // 고객관리 조회시 주소, 유저쿠폰 조회(고객상세조회 페이지)
+        // 고객등급, 고객상태 수정(데이터변동 체크)
+
         return ObjectConverter.toObject(userRepo.save(reqDto.toEntity()), UsersResDto.class);
     }
 
     /**
      * 고객목록조회
      */
-    public Page<UsersResDto> multiQueryUser(@Valid UsersReqDto reqDto, Pageable pageable) {
+    public Page<UsersResDto> multiQueryUser(UsersReqDto reqDto, PageDto pageDto) {
+        // 고객ID, 고객명, 고객등급, 고객상태 조회
+        // 고객ID, 고객명, 고객등급조회
+        // 고객ID, 고객명 조회
+        // 고객ID 조회
+        // 고객명, 고객등급, 고객상태 조회
+        // 고객명, 고객등급 조회
+        // 고객명 조회
+        // 고객등급, 고객상태 조회
+        // 고객상태 조회
+        // 전체조회
         List<UsersResDto> list = new ArrayList<>();
         List<Users> tmp = userRepo.findAll();
         tmp.forEach(user -> list.add(convertDto(user)));
         Long count = userRepo.count();
-        pageable = PageRequest.of(reqDto.getPageNumber(), reqDto.getSize());
+        Pageable pageable = PageRequest.of(reqDto.getPageNumber(), reqDto.getSize());
 
         return new PageImpl<>(list, pageable, count);
+    }
+    /**
+     * 고객상세조회
+     */
+    public UsersResDto singleQueryUser(UsersReqDto reqDto) {
+        // 고객관리 조회시 주소, 유저쿠폰 조회
+
+        return null;
     }
 
     /** EntityToDTO */

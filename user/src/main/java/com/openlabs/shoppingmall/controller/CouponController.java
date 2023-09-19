@@ -22,9 +22,9 @@ public class CouponController {
 
     private final CouponService couponService;
 
-    @GetMapping("/r-coupon")
-    @ApiOperation(value = "사용자 쿠폰 조회")
-    public ResponseDto<Slice<CouponDto>> getCouponList(String userId, PageDto pageDto) {
-        return ResponseDto.ok(couponService.getCouponList(userId, pageDto));
-    }
+//    @GetMapping("/r-coupon")
+//    @ApiOperation(value = "사용자 쿠폰 조회")
+//    public ResponseDto<Slice<CouponDto>> getCouponList(String userId, PageDto pageDto) {
+//        return ResponseDto.ok(couponService.getCouponList(userId, pageDto));
+//    }
 }
