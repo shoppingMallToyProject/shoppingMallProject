@@ -32,9 +32,9 @@ public class CouponsAdminService {
      * 쿠폰등록
      */
     public CouponResDto createCoupon(@Valid CouponReqDto reqDto) {
-        Optional<Items> entity = couponRepo.findByCouponName(reqDto.getCouponName());
-        if (entity.get().getItemName().equals(reqDto.getCouponName())) {
-            log.info("같은 이름의 쿠폰이 있습니다. => itemName : {}", entity.get().getItemName());
+        Coupons entity = couponRepo.findByCouponName(reqDto.getCouponName());
+        if (entity != null) {
+            log.info("같은 이름의 쿠폰이 있습니다. => itemName : {}", entity.getCouponName());
             throw new ShopException("같은 이름의 쿠폰이 있습니다.");
         }
 
@@ -46,8 +46,8 @@ public class CouponsAdminService {
      */
     public CouponResDto updateCoupon(@Valid CouponReqDto reqDto) {
         CouponReqDto existedDto = ObjectConverter.toObject(couponRepo.findById(reqDto.getCouponId()), CouponReqDto.class);
-        if(ObjectUtils.isEmpty(existedDto)) throw new ShopException("데이터가 없습니다.");
-        if(existedDto.equals(reqDto))   throw new ShopException("데이터를 변경해 주세요");
+        if (ObjectUtils.isEmpty(existedDto)) throw new ShopException("데이터가 없습니다.");
+        if (existedDto.equals(reqDto)) throw new ShopException("데이터를 변경해 주세요");
         return ObjectConverter.toObject(couponRepo.save(reqDto.toEntity()), CouponResDto.class);
     }
 
@@ -84,7 +84,7 @@ public class CouponsAdminService {
                     .map(coupons -> ObjectConverter.toObject(coupons, CouponResDto.class));
         }// 할인률 , 시작, 종료일시 조회
         else if (reqDto.getDiscountRate() != null) {
-            return  couponRepo.findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndDiscountRateIs(entity.getEventStartTime(), entity.getEventEndTime(), entity.getDiscountRate(), pageable)
+            return couponRepo.findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndDiscountRateIs(entity.getEventStartTime(), entity.getEventEndTime(), entity.getDiscountRate(), pageable)
                     .map(coupons -> ObjectConverter.toObject(coupons, CouponResDto.class));
         }// 전체조회
         else {

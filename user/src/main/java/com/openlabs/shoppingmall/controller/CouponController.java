@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Api(tags = {"쿠폰 관련 API LIST"})
 @RestController
 @RequestMapping("/labshop/v1/coupon")
@@ -22,9 +24,9 @@ public class CouponController {
 
     private final CouponService couponService;
 
-//    @GetMapping("/r-coupon")
-//    @ApiOperation(value = "사용자 쿠폰 조회")
-//    public ResponseDto<Slice<CouponDto>> getCouponList(String userId, PageDto pageDto) {
-//        return ResponseDto.ok(couponService.getCouponList(userId, pageDto));
-//    }
+    @GetMapping("/r-coupon")
+    @ApiOperation(value = "사용자 쿠폰 조회")
+    public ResponseDto<List<CouponDto>> getCouponList(String userId) {
+        return ResponseDto.ok(couponService.getCouponList(userId));
+    }
 }
