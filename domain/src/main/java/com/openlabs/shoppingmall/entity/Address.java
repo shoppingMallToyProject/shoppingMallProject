@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Address {
+public class Address extends BaseEntity{
     /** 주소ID */
     @Id @GeneratedValue
     @Column(name = "ADDRESS_ID")

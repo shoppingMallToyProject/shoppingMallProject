@@ -18,6 +18,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -52,14 +53,27 @@ public class TestService {
      * 서비스용 유저생성 서비스
      */
     public UsersTestResDto createUsers(UsersTestResDto user) {
-        Users entity = user.saveEntity();
-        userRepo.save(entity);
+        List<Address> tmpAddr = new ArrayList<>();
+        user.getAddresses().forEach(address -> {
+            Address addr = Address.builder()
+                    .city(address.getCity())
+                    .street(address.getStreet())
+                    .zipcode(address.getZipcode())
+                    .users(user.saveEntity())
+                    .build();
+            tmpAddr.add(addr);
+        });
+        user.setAddresses(tmpAddr);
+        Users userEntity = user.saveEntity();
+        Users result = userRepo.save(userEntity);
+        UsersTestResDto resultDto = ObjectConverter.toObject(result, UsersTestResDto.class);
 
-        return user;
+        return resultDto;
+
     }
 
     /**
-     * 서비스용 유저생성 서비스
+     * 서비스용 주문생성 서비스
      */
     public void createOrder(String userId, List<Long> idList) {
         Users users = userRepo.findById(userId).get();

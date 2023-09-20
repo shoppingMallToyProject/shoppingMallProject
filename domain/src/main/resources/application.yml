@@ -11,20 +11,26 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  # DB path
   config:
     import: db-config.properties
+  # MySQL
   datasource:
     url: ${db.url}
     username: ${db.username}
     password: ${db.password}
     driver-class-name: ${db.driver-class-name}
-
+  # JPA
   jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 #      ddl-auto: create
       ddl-auto: validate
+    generate-ddl: true
+
     properties:
       hibernate:
         format_sql: true

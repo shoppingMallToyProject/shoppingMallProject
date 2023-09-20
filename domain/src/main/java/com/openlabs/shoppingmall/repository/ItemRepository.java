@@ -16,4 +16,6 @@ public interface ItemRepository extends JpaRepository<Items, Long> {
     Slice<Items> findSliceBy(Pageable pageable);
     /** 상품명 단건조회(상품명 중복체크) */
     Optional<Items> findByItemName(String itemName);
+
+    Slice<Items> findSliceByItemId(Long itemId, Pageable pageable);
 }

@@ -8,9 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -26,26 +26,28 @@ public class ItemsReqDto extends PageDto{
 //    @NotBlank(message = "상품명은 필수항목입니다.")
     private String itemName;
     /** 상품가 */
-//    @NotNull(message = "상품가는 필수항목입니다.")
+//    @NotBlank(message = "상품가는 필수항목입니다.")
     private Integer itemPrice;
     /** 재고 */
-//    @NotNull(message = "상품재고는 필수항목입니다.")
+//    @NotBlank(message = "상품재고는 필수항목입니다.")
     private Integer itemStock;
     /** 할인률 */
     @Max(value = 100)
     private Integer discountRate;
     /** 이벤트시작일시 */
-    @NotBlank(message = "이벤트시작일시는 필수항목입니다.")
+//    @NotBlank(message = "이벤트시작일시는 필수항목입니다.")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private String eventStartTime;
     /** 이벤트종료일시 */
-    @NotBlank(message = "이벤트종료일시는 필수항목입니다.")
+//    @NotBlank(message = "이벤트종료일시는 필수항목입니다.")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private String eventEndTime;
 
     public Items toEntity(){
-        LocalDateTime startTime = parseDateTimeString(this.eventStartTime);
-        LocalDateTime endTime = parseDateTimeString(this.eventEndTime);
+        LocalDateTime startTime = null;
+        LocalDateTime endTime = null;
+        if (StringUtils.hasText(this.eventStartTime)) startTime = parseDateTimeString(this.eventStartTime);
+        if (StringUtils.hasText(this.eventEndTime)) endTime = parseDateTimeString(this.eventEndTime);
         return Items.builder()
                 .itemId(this.itemId)
                 .itemName(this.itemName)

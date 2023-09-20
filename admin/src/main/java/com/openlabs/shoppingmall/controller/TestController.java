@@ -56,7 +56,7 @@ public class TestController {
      */
     @PostMapping("/c-user")
     @ApiOperation(value = "유저생성 테스트")
-    public ResponseDto<UsersTestResDto> createUsers(UsersTestResDto user) {
+    public ResponseDto<UsersTestResDto> createUsers(@RequestBody UsersTestResDto user) {
         try {
             return ResponseDto.ok(service.createUsers(user));
         } catch (ShopException e) {
@@ -65,7 +65,7 @@ public class TestController {
     }
 
     @PostMapping("/c-order")
-    @ApiOperation(value = "유저생성 테스트")
+    @ApiOperation(value = "주문생성 테스트")
     public ResponseDto<Boolean> createOrder(String userId, @RequestBody List<Long> itemIdList) {
         try {
             service.createOrder(userId, itemIdList);
