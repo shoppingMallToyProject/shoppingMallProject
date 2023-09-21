@@ -29,11 +29,10 @@ public class ItemsAdminService {
     /** 상품등록 */
     public ItemsResDto createItems(@Valid ItemsReqDto reqDto) {
         Optional<Items> entity = itemRepo.findByItemName(reqDto.getItemName());
-        if (entity.get().getItemName().equals(reqDto.getItemName())) {
-            log.info("같은 이름의 상품이 있습니다. => itemName : {}", entity.get().getItemName());
-            throw new ShopException("같은 이름의 상품이 있습니다.");
-        }
-
+            if (entity.isPresent() && entity.get().getItemName().equals(reqDto.getItemName())) {
+                log.info("같은 이름의 상품이 있습니다. => itemName : {}", entity.get().getItemName());
+                throw new ShopException("같은 이름의 상품이 있습니다.");
+            }
         return ObjectConverter.toObject(itemRepo.save(reqDto.toEntity()), ItemsResDto.class);
     }
     /** 상품수정 */
@@ -71,9 +70,15 @@ public class ItemsAdminService {
         // 재고, 할인률, 시작, 종료일시 조회
         // 재고, 시작, 종료일시 조회
         // 할인률, 시작, 종료일시 조회
-        // 전체조회
-        return itemRepo.findSliceBy(pageable)
-                .map(items -> ObjectConverter.toObject(items, ItemsResDto.class));
+        // 상품ID 조회
+        if (reqDto.getItemId() != null) {
+            return itemRepo.findSliceByItemId(reqDto.getItemId(), pageable)
+                    .map(items -> ObjectConverter.toObject(items, ItemsResDto.class));
+        } else {
+            // 전체조회
+            return itemRepo.findSliceBy(pageable)
+                    .map(items -> ObjectConverter.toObject(items, ItemsResDto.class));
+        }
     }
     /** 상품상세조회 */
     public ItemsResDto singleQueryItem(@Valid Long itemId) {

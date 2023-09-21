@@ -1,7 +1,6 @@
 package com.openlabs.shoppingmall.service;
 
 import com.openlabs.framework.dto.PageDto;
-import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.UsersReqDto;
 import com.openlabs.shoppingmall.dto.UsersResDto;
 import com.openlabs.shoppingmall.entity.Users;
@@ -30,9 +29,12 @@ public class UsersAdminService {
      */
     public UsersResDto updateUser(UsersReqDto reqDto) {
         // 고객관리 조회시 주소, 유저쿠폰 조회(고객상세조회 페이지)
+        Users user = userRepo.findById(reqDto.getUserId()).get();
         // 고객등급, 고객상태 수정(데이터변동 체크)
+        // 유저에게 쿠폰주기
 
-        return ObjectConverter.toObject(userRepo.save(reqDto.toEntity()), UsersResDto.class);
+        return null;
+//        return ObjectConverter.toObject(userRepo.save(reqDto.toEntity()), UsersResDto.class);
     }
 
     /**

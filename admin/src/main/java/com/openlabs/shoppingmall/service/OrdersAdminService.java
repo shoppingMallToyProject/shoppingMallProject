@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 public class OrdersAdminService {
     @Autowired
     OrderRepository orderRepo;
-    /** 고객관리 */
+    /** 주문관리 */
     public OrdersResDto updateOrder(OrdersReqDto reqDto) {
         // 주문 취소 및 환불 로직
 
