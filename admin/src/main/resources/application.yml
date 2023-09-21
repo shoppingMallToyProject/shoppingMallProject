@@ -18,6 +18,18 @@ spring:
     username: ${db.username}
     password: ${db.password}
     driver-class-name: ${db.driver-class-name}
+  mail:
+    host: smtp.gmail.com  #{SMTP 서버 호스트}
+    port: 587 #{SMTP 서버 포트}
+    username: ${mail.username} #{SMTP 서버 로그인 아이디}
+    password: ${mail.password} #{SMTP 서버 로그인 패스워드}
+    properties:
+      mail:
+        smtp:
+          auth: true #{사용자 인증 시도 여부 (기본값 : false)}
+          timeout: 5000 #{Socket Read Timeout 시간 ms (기본값 : 무한대)}
+          starttls:
+            enable: true #{StartTLS 활성화 여부 (기본값 : false)}
 
   jpa:
     hibernate:
