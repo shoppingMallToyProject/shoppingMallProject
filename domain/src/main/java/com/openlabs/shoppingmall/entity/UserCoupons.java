@@ -38,4 +38,15 @@ public class UserCoupons extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COUPON_ID")
     private Coupons coupons;
+
+    /**
+     * 쿠폰증정
+     */
+    public static UserCoupons couponGift(Users user, Coupons coupons) {
+        return UserCoupons.builder()
+                .users(user)
+                .coupons(coupons)
+                .useYn("N")
+                .build();
+    }
 }
