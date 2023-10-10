@@ -32,6 +32,15 @@ public class Users extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRating userRating;
 
+    public void addOrders(Orders orders){
+        this.orders.add(orders);
+        orders.setUsers(this);
+    }
+    public void removeOrders(Orders orders){
+        this.orders.remove(orders);
+        orders.setUsers(null);
+    }
+
     /** 주문 */
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Orders> orders = new ArrayList<>();

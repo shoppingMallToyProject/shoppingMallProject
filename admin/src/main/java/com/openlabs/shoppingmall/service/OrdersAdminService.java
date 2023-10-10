@@ -1,8 +1,11 @@
 package com.openlabs.shoppingmall.service;
 
 import com.openlabs.framework.dto.PageDto;
+import com.openlabs.framework.exception.ShopException;
+import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.OrdersReqDto;
 import com.openlabs.shoppingmall.dto.OrdersResDto;
+import com.openlabs.shoppingmall.entity.Orders;
 import com.openlabs.shoppingmall.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,15 @@ public class OrdersAdminService {
     OrderRepository orderRepo;
     /** 주문관리 */
     public OrdersResDto updateOrder(OrdersReqDto reqDto) {
+//        if (!orderRepo.existsById(reqDto.getOrderId())) throw new ShopException(("데이터가 없습니다."));
+        Orders entity = orderRepo.findById(reqDto.getOrderId()).orElseThrow(() -> new ShopException("데이터가 없습니다."));
+        if(entity.equals(reqDto))   throw new ShopException("데이터를 변경해 주세요");
         // 주문 취소 및 환불 로직
+        String userId = entity.getUsers().getUserId();
+        log.info("userID : ", userId);
+
+        OrdersResDto dto = ObjectConverter.toObject(entity, OrdersResDto.class);
+        log.info("dto : ", dto.getUsers().getUserId());
 
         return null;
     }

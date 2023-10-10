@@ -6,7 +6,6 @@ import com.openlabs.framework.util.ObjectConverter;
 import com.openlabs.shoppingmall.dto.CouponReqDto;
 import com.openlabs.shoppingmall.dto.CouponResDto;
 import com.openlabs.shoppingmall.entity.Coupons;
-import com.openlabs.shoppingmall.entity.Items;
 import com.openlabs.shoppingmall.repository.CouponRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Slf4j
 @Service
