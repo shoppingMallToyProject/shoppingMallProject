@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.dto;
 
+import com.openlabs.shoppingmall.entity.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Data

@@ -1,8 +1,5 @@
 package com.openlabs.shoppingmall.dto;
 
-import com.openlabs.shoppingmall.entity.OrderStatus;
-import com.openlabs.shoppingmall.entity.Orders;
-import com.openlabs.shoppingmall.entity.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
