@@ -52,19 +52,19 @@ public class TestService {
     /**
      * 서비스용 유저생성 서비스
      */
-    public UsersTestResDto createUsers(UsersTestResDto user) {
+    public UsersTestResDto createUsers(UsersTestResDto reqDto) {
         List<Address> tmpAddr = new ArrayList<>();
-        user.getAddresses().forEach(address -> {
+        reqDto.getAddresses().forEach(address -> {
             Address addr = Address.builder()
                     .city(address.getCity())
                     .street(address.getStreet())
                     .zipcode(address.getZipcode())
-                    .users(user.saveEntity())
+                    .users(reqDto.saveEntity())
                     .build();
             tmpAddr.add(addr);
         });
-        user.setAddresses(tmpAddr);
-        Users userEntity = user.saveEntity();
+        reqDto.setAddresses(tmpAddr);
+        Users userEntity = reqDto.saveEntity();
         Users result = userRepo.save(userEntity);
         UsersTestResDto resultDto = ObjectConverter.toObject(result, UsersTestResDto.class);
 

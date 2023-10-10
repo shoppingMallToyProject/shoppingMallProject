@@ -74,18 +74,6 @@ public class Orders extends BaseEntity {
     /**
      * 주문 취소
      */
-    public Orders cancel(Users user, List<OrderItem> orderItem) {
-        return Orders.builder()
-                .users(user)
-                .orderStatus(OrderStatus.CANCEL)
-                .orderDate(LocalDateTime.now())
-                .totalPrice(getTotalPrice(orderItem))
-                .build();
-    }
-
-    /**
-     * 주문 취소
-     */
     public static void cancel(Orders orders) {
         orders.setOrderStatus(OrderStatus.CANCEL);
     }
@@ -103,5 +91,19 @@ public class Orders extends BaseEntity {
     public static Integer getTotalPrice(List<OrderItem> orderItem, Coupons coupons) {
         return (orderItem.stream().mapToInt(OrderItem::getTotalPrice).sum())
                 * coupons.getDiscountRate();
+    }
+
+    /**
+     * 주문 취소
+     */
+    public Orders cancel() {
+        Orders orders = Orders.builder()
+                .users(this.users)
+                .orderStatus(OrderStatus.CANCEL)
+                .orderDate(LocalDateTime.now())
+                .totalPrice(this.totalPrice)
+                .build();
+        users.addOrders(orders);
+        return orders;
     }
 }

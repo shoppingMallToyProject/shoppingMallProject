@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -56,32 +57,22 @@ public class ItemsAdminService {
         return itemId;
     }
     /** 상품목록조회 */
-    public Slice<ItemsResDto> multiQueryItems(ItemsReqDto reqDto, PageDto pageDto) {
-        Pageable pageable = PageRequest.of(reqDto.getPageNumber(), pageDto.getSize());
+    public Slice<ItemsResDto> multiQueryItems(@Valid ItemsReqDto reqDto, PageDto pageDto) {
+        Pageable pageable = PageRequest.of(pageDto.getPageNumber(), pageDto.getSize());
 
         Items entity = reqDto.toEntity();
-        // 상품명, 상품가, 재고, 할인률, 시작, 종료일시 조회
-        // 상품명, 상품가, 재고, 시작, 종료일시 조회
-        // 상품명, 상품가, 시작, 종료일시 조회
         // 상품명, 시작, 종료일시 조회
-        // 상품가, 재고, 할인률, 시작, 종료일시 조회
-        // 상품가, 재고, 시작, 종료일시 조회
-        // 상품가, 시작, 종료일시 조회
-        // 재고, 할인률, 시작, 종료일시 조회
-        // 재고, 시작, 종료일시 조회
-        // 할인률, 시작, 종료일시 조회
-        // 상품ID 조회
-        if (reqDto.getItemId() != null) {
-            return itemRepo.findSliceByItemId(reqDto.getItemId(), pageable)
+        if (StringUtils.hasText(reqDto.getItemName())) {
+            return itemRepo.findSliceByEventStartTimeGreaterThanEqualAndEventEndTimeLessThanEqualAndItemNameContaining(entity.getEventStartTime(), entity.getEventEndTime(), entity.getItemName(), pageable)
                     .map(items -> ObjectConverter.toObject(items, ItemsResDto.class));
-        } else {
-            // 전체조회
+        } // 시작, 종료일시 조회
+        else {
             return itemRepo.findSliceBy(pageable)
                     .map(items -> ObjectConverter.toObject(items, ItemsResDto.class));
         }
     }
     /** 상품상세조회 */
-    public ItemsResDto singleQueryItem(@Valid Long itemId) {
+    public ItemsResDto singleQueryItem( Long itemId) {
         return ObjectConverter.toObject(itemRepo.findById(itemId), ItemsResDto.class);
     }
 }

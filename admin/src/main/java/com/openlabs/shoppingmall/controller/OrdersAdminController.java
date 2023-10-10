@@ -35,7 +35,7 @@ public class OrdersAdminController {
         try {
             return ResponseDto.ok(service.updateOrder(reqDto));
         } catch (ShopException e) {
-            return ResponseDto.error(401, "고객관리에 실패했습니다.", null, null);
+            return ResponseDto.error(401, "고객관리 수정에 실패했습니다.", null, null);
         }
     }
     /** 주문목록조회

@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequestMapping("/labshop/v1/admin")
@@ -46,7 +48,7 @@ public class UsersAdminController {
     @ApiOperation(value = "쿠폰증정")
     public ResponseDto<UserCouponsResDto> giftCoupon(@RequestBody UserCouponsReqDto reqDto) {
         try {
-            return ResponseDto.ok(service.giftCoupon(reqDto));
+             return ResponseDto.ok(service.giftCoupon(reqDto));
         } catch (ShopException e) {
             return ResponseDto.error(401, "고객관리에 실패했습니다.", null, null);
         }

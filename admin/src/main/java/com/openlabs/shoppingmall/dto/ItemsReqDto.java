@@ -1,8 +1,8 @@
 package com.openlabs.shoppingmall.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.openlabs.framework.dto.PageDto;
 import com.openlabs.shoppingmall.entity.Items;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,28 +19,35 @@ import java.time.format.DateTimeFormatter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemsReqDto extends PageDto{
+public class ItemsReqDto{
     /** 상품ID */
+    @ApiModelProperty(value = "상품ID", example = "7")
     private Long itemId;
     /** 상품명 */
 //    @NotBlank(message = "상품명은 필수항목입니다.")
+    @ApiModelProperty(value = "상품명", example = "아맛나")
     private String itemName;
     /** 상품가 */
 //    @NotBlank(message = "상품가는 필수항목입니다.")
+    @ApiModelProperty(value = "상품가", example = "1000")
     private Integer itemPrice;
     /** 재고 */
 //    @NotBlank(message = "상품재고는 필수항목입니다.")
+    @ApiModelProperty(value = "재고", example = "100")
     private Integer itemStock;
     /** 할인률 */
     @Max(value = 100)
+    @ApiModelProperty(value = "할인률", example = "5")
     private Integer discountRate;
     /** 이벤트시작일시 */
 //    @NotBlank(message = "이벤트시작일시는 필수항목입니다.")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @ApiModelProperty(value = "이벤트시작일시", example = "2023-09-01T09:00:00")
     private String eventStartTime;
     /** 이벤트종료일시 */
 //    @NotBlank(message = "이벤트종료일시는 필수항목입니다.")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @ApiModelProperty(value = "이벤트종료일시", example = "2023-10-01T09:00:00")
     private String eventEndTime;
 
     public Items toEntity(){
