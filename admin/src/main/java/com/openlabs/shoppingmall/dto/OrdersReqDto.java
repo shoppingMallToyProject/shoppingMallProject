@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrdersReqDto{
     /** 주문ID */
-    @NotBlank(message = "주문ID는 필수 항목입니다.")
+//    @NotBlank(message = "주문ID는 필수 항목입니다.")
     private Long orderId;
 //    /** 주문일시 */
 //    private LocalDateTime orderDate;

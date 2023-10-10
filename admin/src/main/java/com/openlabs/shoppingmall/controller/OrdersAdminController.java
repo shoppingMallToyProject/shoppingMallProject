@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,7 @@ public class OrdersAdminController {
      * */
     @GetMapping("/r-order")
     @ApiOperation(value = "주문목록조회")
-    public ResponseDto<Page<OrdersResDto>> multiQueryOrder(OrdersReqDto reqDto, PageDto pageDto) {
+    public ResponseDto<Slice<OrdersResDto>> multiQueryOrder(OrdersReqDto reqDto, PageDto pageDto) {
         try {
             return ResponseDto.ok(service.multiQueryOrder(reqDto, pageDto));
         } catch (ShopException e) {

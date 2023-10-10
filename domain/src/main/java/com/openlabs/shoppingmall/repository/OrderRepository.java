@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, Long> {
     Slice<Orders> findByUsers(Users users, Pageable pageable);
+
+    Slice<Orders> findSliceBy(Pageable pageable);
 }

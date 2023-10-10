@@ -98,10 +98,11 @@ public class Orders extends BaseEntity {
      */
     public Orders cancel() {
         Orders orders = Orders.builder()
-                .users(this.users)
+                .orderId(this.orderId)
                 .orderStatus(OrderStatus.CANCEL)
                 .orderDate(LocalDateTime.now())
                 .totalPrice(this.totalPrice)
+                .users(this.users)
                 .build();
         users.addOrders(orders);
         return orders;

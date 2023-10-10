@@ -1,5 +1,9 @@
 package com.openlabs.shoppingmall.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.openlabs.shoppingmall.entity.OrderStatus;
+import com.openlabs.shoppingmall.entity.Orders;
+import com.openlabs.shoppingmall.entity.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +30,7 @@ public class OrdersResDto {
     @NotBlank(message = "재고는 필수 항목입니다.")
     private Integer totalPrice;
     /** 고객 */
+    @JsonIgnore
     private Users users;
 
     public Orders toEntity(){

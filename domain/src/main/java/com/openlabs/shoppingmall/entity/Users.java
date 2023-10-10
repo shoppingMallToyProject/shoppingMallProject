@@ -42,7 +42,7 @@ public class Users extends BaseEntity {
     }
 
     /** 주문 */
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", /*cascade = CascadeType.ALL,*/ fetch = FetchType.LAZY)
     private List<Orders> orders = new ArrayList<>();
     /** 고객쿠폰 */
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
