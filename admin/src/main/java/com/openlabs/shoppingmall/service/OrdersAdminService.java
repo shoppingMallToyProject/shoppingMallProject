@@ -3,18 +3,16 @@ package com.openlabs.shoppingmall.service;
 import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.exception.ShopException;
 import com.openlabs.framework.util.ObjectConverter;
-import com.openlabs.shoppingmall.dto.CouponResDto;
 import com.openlabs.shoppingmall.dto.OrdersReqDto;
 import com.openlabs.shoppingmall.dto.OrdersResDto;
 import com.openlabs.shoppingmall.entity.Orders;
-import com.openlabs.shoppingmall.entity.Users;
 import com.openlabs.shoppingmall.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 @Slf4j
@@ -40,6 +38,7 @@ public class OrdersAdminService {
         Pageable pageable = PageRequest.of(pageDto.getPageNumber(), pageDto.getSize());
         // 주문 목록조회(order, user)
         Slice<Orders> orderSlice = orderRepo.findSliceBy(pageable);
+        log.info("git test");
 
 //        orderRepo.findSliceBy(pageable).map(orders -> ObjectConverter.toObject(orders, OrdersResDto.class));
 //        return orderSlice.map(orders -> ObjectConverter.toObject(orders, OrdersResDto.class));
