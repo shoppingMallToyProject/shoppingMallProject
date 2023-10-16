@@ -1,5 +1,6 @@
 package com.openlabs.shoppingmall.service;
 
+import com.openlabs.framework.exception.ShopException;
 import com.openlabs.shoppingmall.AdminApplication;
 import com.openlabs.shoppingmall.entity.*;
 import com.openlabs.shoppingmall.repository.ItemRepository;
@@ -65,11 +66,10 @@ class OrdersAdminServiceTest {
     @Rollback
     void OrderTest(){
         // 유저조회
-        Optional<Users> userEntity = userRepo.findById("testUser");
+        Optional<Users> userEntity = userRepo.findById("teset22@test.org");
         // 상품조회
-        Optional<Items> itemEntity = itemRepo.findById(3L);
+        Optional<Items> itemEntity = itemRepo.findById(7L);
         // 주문 생성
-
         Orders order = Orders.builder().build().orderCreate(userEntity.get());
         // 상품주문 생성
         List<OrderItem> orderItems = new ArrayList<>();
@@ -82,5 +82,25 @@ class OrdersAdminServiceTest {
 
         orderRepo.save(order);
         orderItems.stream().forEach(orderItem -> orderItemRepo.save(orderItem));
+    }
+
+    @Test
+    @Rollback
+    void updateOrderTest() throws Exception{
+        // given
+        Long orderId = 1l;
+        // when
+        Orders entity = orderRepo.findById(orderId).orElseThrow(() -> new ShopException("데이터가 없습니다."));
+        entity.getUsers().addOrders(entity);
+//        Users user = userRepo.findById(entity.getUsers().getUserId()).get();
+        Users user = entity.getUsers();
+//        System.out.println("user = " + user.toString());
+//        System.out.println("user.getUserId() = " + user.getUserId());
+        Orders result = entity.cancel();
+//        System.out.println("result.getUsers() = " + result.getUsers().getUserId());
+//        System.out.println("result.getOrderStatus() = " + result.getOrderStatus());
+        // then
+        orderRepo.save(result);
+//        orderRepo.findAll();
     }
 }

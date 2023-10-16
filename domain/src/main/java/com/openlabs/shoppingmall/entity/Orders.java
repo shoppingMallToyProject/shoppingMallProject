@@ -43,7 +43,8 @@ public class Orders extends BaseEntity {
      * 고객
      */
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+//    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private Users users;
 
@@ -74,18 +75,6 @@ public class Orders extends BaseEntity {
     /**
      * 주문 취소
      */
-    public Orders cancel(Users user, List<OrderItem> orderItem) {
-        return Orders.builder()
-                .users(user)
-                .orderStatus(OrderStatus.CANCEL)
-                .orderDate(LocalDateTime.now())
-                .totalPrice(getTotalPrice(orderItem))
-                .build();
-    }
-
-    /**
-     * 주문 취소
-     */
     public static void cancel(Orders orders) {
         orders.setOrderStatus(OrderStatus.CANCEL);
     }
@@ -103,5 +92,20 @@ public class Orders extends BaseEntity {
     public static Integer getTotalPrice(List<OrderItem> orderItem, Coupons coupons) {
         return (orderItem.stream().mapToInt(OrderItem::getTotalPrice).sum())
                 * coupons.getDiscountRate();
+    }
+
+    /**
+     * 주문 취소
+     */
+    public Orders cancel() {
+        Orders orders = Orders.builder()
+                .orderId(this.orderId)
+                .orderStatus(OrderStatus.CANCEL)
+                .orderDate(LocalDateTime.now())
+                .totalPrice(this.totalPrice)
+                .users(this.users)
+                .build();
+        users.addOrders(orders);
+        return orders;
     }
 }

@@ -52,19 +52,19 @@ public class TestService {
     /**
      * 서비스용 유저생성 서비스
      */
-    public UsersTestResDto createUsers(UsersTestResDto user) {
+    public UsersTestResDto createUsers(UsersTestResDto reqDto) {
         List<Address> tmpAddr = new ArrayList<>();
-        user.getAddresses().forEach(address -> {
+        reqDto.getAddresses().forEach(address -> {
             Address addr = Address.builder()
                     .city(address.getCity())
                     .street(address.getStreet())
                     .zipcode(address.getZipcode())
-                    .users(user.saveEntity())
+                    .users(reqDto.saveEntity())
                     .build();
             tmpAddr.add(addr);
         });
-        user.setAddresses(tmpAddr);
-        Users userEntity = user.saveEntity();
+        reqDto.setAddresses(tmpAddr);
+        Users userEntity = reqDto.saveEntity();
         Users result = userRepo.save(userEntity);
         UsersTestResDto resultDto = ObjectConverter.toObject(result, UsersTestResDto.class);
 
@@ -85,7 +85,7 @@ public class TestService {
 
         idList.forEach(id -> {
 
-            Items items = itemRepo.findById(id).get();
+            Items items = itemRepo.findById(id).orElseGet(null);
             orderItemRepo.save(OrderItem.builder()
                     .orders(orders)
                     .totalPrice(100000)
@@ -113,13 +113,13 @@ public class TestService {
     }
 
     public Slice<Orders> findUserOrder(String userId, PageDto pageDto) {
-        Users users = userRepo.findById(userId).get();
+        Users users = userRepo.findById(userId).orElseGet(null);
         Pageable pageable = PageRequest.of(pageDto.getPageNumber(), pageDto.getSize());
         return orderRepository.findByUsers(users, pageable);
     }
 
     public List<OrderItem> findUserOrderItem(Long orderId) {
-        Orders orders = orderRepository.findById(orderId).get();
+        Orders orders = orderRepository.findById(orderId).orElseGet(null);
         return orderItemRepo.findByOrders(orders);
     }
 }

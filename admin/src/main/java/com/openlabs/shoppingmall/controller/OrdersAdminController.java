@@ -3,6 +3,7 @@ package com.openlabs.shoppingmall.controller;
 import com.openlabs.framework.dto.PageDto;
 import com.openlabs.framework.dto.ResponseDto;
 import com.openlabs.framework.exception.ShopException;
+import com.openlabs.shoppingmall.dto.OrdersDetailResDto;
 import com.openlabs.shoppingmall.dto.OrdersReqDto;
 import com.openlabs.shoppingmall.dto.OrdersResDto;
 import com.openlabs.shoppingmall.service.OrdersAdminService;
@@ -10,7 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,7 @@ public class OrdersAdminController {
         try {
             return ResponseDto.ok(service.updateOrder(reqDto));
         } catch (ShopException e) {
-            return ResponseDto.error(401, "고객관리에 실패했습니다.", null, null);
+            return ResponseDto.error(401, "고객관리 수정에 실패했습니다.", null, null);
         }
     }
     /** 주문목록조회
@@ -45,7 +46,7 @@ public class OrdersAdminController {
      * */
     @GetMapping("/r-order")
     @ApiOperation(value = "주문목록조회")
-    public ResponseDto<Page<OrdersResDto>> multiQueryOrder(OrdersReqDto reqDto, PageDto pageDto) {
+    public ResponseDto<Slice<OrdersResDto>> multiQueryOrder(OrdersReqDto reqDto, PageDto pageDto) {
         try {
             return ResponseDto.ok(service.multiQueryOrder(reqDto, pageDto));
         } catch (ShopException e) {
@@ -59,7 +60,7 @@ public class OrdersAdminController {
      * */
     @GetMapping("/r-order/detail")
     @ApiOperation(value = "주문상세조회")
-    public ResponseDto<OrdersResDto> singleQueryOrder(OrdersReqDto reqDto) {
+    public ResponseDto<OrdersDetailResDto> singleQueryOrder(OrdersReqDto reqDto) {
         try {
             return ResponseDto.ok(service.singleQueryOrder(reqDto));
         } catch (ShopException e) {
