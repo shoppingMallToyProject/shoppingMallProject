@@ -26,7 +26,8 @@ public class OrderItem extends BaseEntity {
 
     /** 상품 연관관계 */
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+//    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_ID")
     private Items items;
     /** 주문 연관관계 */

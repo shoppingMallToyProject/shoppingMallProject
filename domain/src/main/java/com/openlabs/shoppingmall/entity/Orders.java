@@ -43,7 +43,8 @@ public class Orders extends BaseEntity {
      * 고객
      */
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+//    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private Users users;
 
