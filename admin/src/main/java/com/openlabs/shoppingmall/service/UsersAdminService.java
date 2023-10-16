@@ -43,23 +43,22 @@ public class UsersAdminService {
      */
     public UsersResDto updateUser(UsersReqDto reqDto) {
         // 고객관리 조회시 주소, 유저쿠폰 조회(고객상세조회 페이지)
-        Users entity = userRepo.findById(reqDto.getUserId()).orElseThrow(() -> new ShopException("수정할 고객이 없습니다."));
+        Users user = userRepo.findById(reqDto.getUserId()).orElseThrow(() -> new ShopException("수정할 고객이 없습니다."));
+        Coupons coupons = couponRepo.findById(reqDto.getCouponId()).orElse(null);
         // 고객등급, 고객상태 수정(데이터변동 체크)
-//        reqDto.setUserRating();
-//        reqDto.setUserStatus();
+        Users changEntity = reqDto.toEntity();
+        UsersResDto result = ObjectConverter.toObject(changEntity, UsersResDto.class);
+
         // 유저에게 쿠폰주기
-//        if (!ObjectUtils.isEmpty(reqDto.getUserCoupons())) {
-//            List<UserCoupons> tmpList = new ArrayList<>();
-//            reqDto.getUserCoupons().forEach(dto -> {
-//                UserCoupons tmp = UserCoupons.builder()
-//                        .users(reqDto.toEntity())
-//                        .coupons()
-//                        .useYn("N")
-//                        .build();
-//            });
-//        }
-        return null;
-//        return ObjectConverter.toObject(userRepo.save(reqDto.toEntity()), UsersResDto.class);
+        if (!userCouponRepo.existsById(reqDto.getCouponId())) {
+            userCouponRepo.save(couponGift(user, coupons));
+        }
+        result.setUserName(user.getUserName());
+        result.setUserPw(user.getUserPw());
+
+        userRepo.save(result.toEntity());
+
+        return result;
     }
 
     /**
@@ -109,7 +108,7 @@ public class UsersAdminService {
     private UsersResDto convertDto(Users user) {
         return UsersResDto.builder()
                 .userId(user.getUserId())
-                .userPw(user.getUserPw())
+//                .userPw(user.getUserPw())
                 .userName(user.getUserName())
                 .userRating(user.getUserRating())
                 .userStatus(user.getUserStatus())
