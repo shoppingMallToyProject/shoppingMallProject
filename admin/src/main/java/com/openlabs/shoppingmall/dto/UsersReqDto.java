@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 @Slf4j
 @Data
@@ -20,12 +19,12 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UsersReqDto extends PageDto {
     /** 고객ID */
-    @NotBlank(message = "회원ID는 이메일 형식의 필수 입력 사항입니다.")
+//    @NotBlank(message = "회원ID는 이메일 형식의 필수 입력 사항입니다.")
     @Email(message = "이메일 형식에 맞게 입력해주세요.")
     private String userId;
     /** 고객명 */
 //    @NotBlank(message = "회원 이름은 필수 입력 항목입니다.")
-//    private String userName;
+    private String userName;
     /** 고객비밀번호 */
 //    @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
 //    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*\\\\W).{8,20}$", message = "비밀번호는 영문과 특수문자를 포함하며 8자 이상이어야 합니다.")
@@ -40,11 +39,9 @@ public class UsersReqDto extends PageDto {
     public Users toEntity(){
         return Users.builder()
                 .userId(this.userId)
-//                .userPw(this.userPw)
-//                .userName(this.userName)
+                .userName(this.userName)
                 .userRating(this.userRating)
                 .userStatus(this.userStatus)
-//                .userCoupons(this.userCoupons)
                 .build();
     }
 }

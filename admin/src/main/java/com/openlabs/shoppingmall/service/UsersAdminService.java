@@ -15,15 +15,13 @@ import com.openlabs.shoppingmall.repository.UserCouponRepository;
 import com.openlabs.shoppingmall.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.openlabs.shoppingmall.entity.UserCoupons.couponGift;
 
@@ -76,44 +74,31 @@ public class UsersAdminService {
     /**
      * 고객목록조회
      */
-    public Page<UsersResDto> multiQueryUser(UsersReqDto reqDto, PageDto pageDto) {
-        // 고객ID, 고객명, 고객등급, 고객상태 조회
-        // 고객ID, 고객명, 고객등급조회
-        // 고객ID, 고객명 조회
-        // 고객ID 조회
-        // 고객명, 고객등급, 고객상태 조회
-        // 고객명, 고객등급 조회
-        // 고객명 조회
-        // 고객등급, 고객상태 조회
-        // 고객상태 조회
-        // 전체조회
-        List<UsersResDto> list = new ArrayList<>();
-        List<Users> tmp = userRepo.findAll();
-        tmp.forEach(user -> list.add(convertDto(user)));
-        Long count = userRepo.count();
-        Pageable pageable = PageRequest.of(reqDto.getPageNumber(), reqDto.getSize());
+    public Slice<UsersResDto> multiQueryUser(UsersReqDto reqDto, PageDto pageDto) {
+        Pageable pageable = PageRequest.of(pageDto.getPageNumber(), pageDto.getSize());
 
-        return new PageImpl<>(list, pageable, count);
+        // 고객명, 고객등급, 고객상태 조회
+        if (StringUtils.hasText(reqDto.getUserName())
+                && !ObjectUtils.isEmpty(reqDto.getUserRating())
+                && !ObjectUtils.isEmpty(reqDto.getUserStatus())){
+            return userRepo.findSliceByUserNameAndUserStatusAndUserRating(reqDto.getUserName(), reqDto.getUserStatus(), reqDto.getUserRating(), pageable)
+                    .map(user -> ObjectConverter.toObject(user, UsersResDto.class));
+        // 전체조회
+        }else{
+            return userRepo.findSliceBy(pageable).map(user -> ObjectConverter.toObject(user, UsersResDto.class));
+        }
     }
     /**
      * 고객상세조회
      */
     public UsersResDto singleQueryUser(UsersReqDto reqDto) {
         // 고객관리 조회시 주소, 유저쿠폰 조회
+        Users user = userRepo.findById(reqDto.getUserId()).orElseThrow(() -> new ShopException("조회된 고객이 없습니다."));
 
-        return null;
+        UsersResDto result = ObjectConverter.toObject(user, UsersResDto.class);
+        result.setAddresses(user.getAddresses());
+        result.setUserCoupons(user.getUserCoupons());
+
+        return result;
     }
-
-    /** EntityToDTO */
-    private UsersResDto convertDto(Users user) {
-        return UsersResDto.builder()
-                .userId(user.getUserId())
-//                .userPw(user.getUserPw())
-                .userName(user.getUserName())
-                .userRating(user.getUserRating())
-                .userStatus(user.getUserStatus())
-                .build();
-    }
-
-
 }

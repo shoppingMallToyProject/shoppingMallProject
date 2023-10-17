@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 @Data
 @Builder
@@ -23,6 +25,10 @@ public class UsersResDto {
     private UserStatus userStatus;
     /** 고객등급 */
     private UserRating userRating;
+
+    private List<UserCoupons> userCoupons;
+
+    private List<Address> addresses;
 
     public Users toEntity(){
         return Users.builder()
