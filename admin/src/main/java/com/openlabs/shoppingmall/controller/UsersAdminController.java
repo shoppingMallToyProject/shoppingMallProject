@@ -12,10 +12,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -60,7 +58,7 @@ public class UsersAdminController {
      * */
     @GetMapping("/r-users")
     @ApiOperation(value = "고객목록조회")
-    public ResponseDto<Page<UsersResDto>> multiQueryUser(UsersReqDto reqDto, PageDto pageDto) {
+    public ResponseDto<Slice<UsersResDto>> multiQueryUser(UsersReqDto reqDto, PageDto pageDto) {
         try {
             return ResponseDto.ok(service.multiQueryUser(reqDto, pageDto));
         } catch (ShopException e) {

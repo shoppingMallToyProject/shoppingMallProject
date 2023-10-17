@@ -28,7 +28,7 @@ public class TestController {
     /**
      * 서비스용 유저조회 서비스
      */
-    @GetMapping("/r-user")
+    @GetMapping("/r-usertest")
     @ApiOperation(value = "유저전체조회 테스트")
     public ResponseDto<List<Users>> searchUsers() {
         try {
@@ -41,7 +41,7 @@ public class TestController {
     /**
      * 서비스용 유저상세 서비스
      */
-    @GetMapping("/r-user/detail")
+    @GetMapping("/r-user/detailtest")
     @ApiOperation(value = "유저단건조회 테스트")
     public ResponseDto<UsersTestResDto> searchOneUsers(String userId) {
         try {
@@ -64,7 +64,7 @@ public class TestController {
         }
     }
 
-    @PostMapping("/c-order")
+    @PostMapping("/c-ordertest")
     @ApiOperation(value = "주문생성 테스트")
     public ResponseDto<Boolean> createOrder(String userId, @RequestBody List<Long> itemIdList) {
         try {
@@ -78,7 +78,7 @@ public class TestController {
     /**
      * 서비스용 주문상품 단건조회 서비스
      */
-    @GetMapping("/r-orderItem/detail")
+    @GetMapping("/r-orderItem/detailtest")
     @ApiOperation(value = "주문상품 단건조회 테스트")
     public ResponseDto<OrderItemTestResDto> searchOneOrderItem(Long orderItemId) {
         try {
@@ -91,7 +91,7 @@ public class TestController {
     /**
      * 서비스용 상품생성 서비스
      */
-    @PostMapping("/c-item")
+    @PostMapping("/c-itemtest")
     @ApiOperation(value = "상품생성 테스트")
     public ResponseDto<ItemTestResDto> createItem(ItemTestResDto item) {
         try {
@@ -101,13 +101,13 @@ public class TestController {
         }
     }
 
-    @GetMapping("/r-userOrder")
+    @GetMapping("/r-userOrdertest")
     public ResponseDto<Slice<Orders>> findUserOrder(String userId, PageDto pageDto) {
 
         return ResponseDto.ok(service.findUserOrder(userId, pageDto));
     }
 
-    @GetMapping("/r-userOrderDetail")
+    @GetMapping("/r-userOrderDetailtest")
     public ResponseDto<List<OrderItem>> findUserOrderItem(Long orderId, PageDto pageDto) {
         return ResponseDto.ok(service.findUserOrderItem(orderId));
     }

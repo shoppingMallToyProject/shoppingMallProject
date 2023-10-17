@@ -1,15 +1,12 @@
 package com.openlabs.shoppingmall.repository;
 
 import com.openlabs.shoppingmall.entity.Coupons;
-import com.openlabs.shoppingmall.entity.Items;
-import com.openlabs.shoppingmall.entity.Users;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupons, Long> {
@@ -23,5 +20,4 @@ public interface CouponRepository extends JpaRepository<Coupons, Long> {
     Slice<Coupons> findSliceBy(Pageable pageable);
     /** 쿠폰명 단건조회(중복체크) */
     Coupons findByCouponName(String couponName);
-
 }
