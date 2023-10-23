@@ -7,6 +7,11 @@ logging:
       hibernate:
         SQL: debug
         type: trace
+jwt:
+  secret: xDpfIyUPoKOjCnsv4AusxHx1kFGxUHw8hfhPGI6LNCe/0/aRE8UpflouCRT8tNLZIHinyGSHplafUejafUOABA==
+  access-token-validity-in-seconds: 7200 # 2시간
+  refresh-token-validity-in-seconds: 43200 # 12시간
+
 spring:
   mvc:
     pathmatch:
@@ -30,7 +35,10 @@ spring:
           timeout: 5000 #{Socket Read Timeout 시간 ms (기본값 : 무한대)}
           starttls:
             enable: true #{StartTLS 활성화 여부 (기본값 : false)}
-
+  # redis
+  redis:
+    host: 34.29.123.82
+    port: 6379
   jpa:
     hibernate:
       naming:

@@ -8,6 +8,21 @@ version = '1.0'
 
 dependencies {
 	implementation('org.modelmapper:modelmapper:3.1.1')
+
+	// spring boot
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.projectlombok:lombok:1.18.20'
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	// SpringSecurity
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// JWT
+	implementation 'javax.xml.bind:jaxb-api'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 }
 
 bootJar { enabled = false }

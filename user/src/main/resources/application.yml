@@ -18,6 +18,10 @@ spring:
     username: ${db.username}
     password: ${db.password}
     driver-class-name: ${db.driver-class-name}
+  # redis
+  redis:
+    host: 34.29.123.82
+    port: 6379
 
   jpa:
     hibernate:
